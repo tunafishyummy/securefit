@@ -16,7 +16,6 @@ public class MainMenuScreen extends JFrame {
         
         // Main menu
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         mainPanel.setBackground(Color.WHITE);
         
         //Black Top Bar
