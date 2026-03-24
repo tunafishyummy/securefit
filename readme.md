@@ -1,2 +1,2 @@
 We asked the flowers
-![til](media\flowers.gif)
+![you can ask](./media/flowers.gif)
