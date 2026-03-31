@@ -8,7 +8,7 @@ public class AdminMenuPage {
         panel.setBounds(0, 0, Main.window.getWidth(), Main.window.getHeight());
         panel.setBackground(Color.WHITE);
 
-        ImagePanel image5 = new ImagePanel("securefit/images/Image5.png", 1, 1, 200, 200);
+        ImagePanel image5 = new ImagePanel("securefit/images/Image5.png", 1, 1, 50, 50);
         image5.setOnClick(() -> HomePage.show());
         panel.add(image5); 
 
