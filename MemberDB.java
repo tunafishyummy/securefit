@@ -1,11 +1,20 @@
 import java.sql.*;
+
+import org.mindrot.jbcrypt.BCrypt;
 public class MemberDB {
     private static final String DB_URL = "jdbc:sqlite:securefit.db";
+    private static final Connection connection;
 
     static {
-        try { Class.forName("org.sqlite.JDBC"); }   // load driver once
-        catch (ClassNotFoundException e) { e.printStackTrace(); }
-        initDB();
+        try { 
+            connection = DriverManager.getConnection(DB_URL);
+            initDB();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try { connection.close(); } catch (SQLException ignored) {}
+            }));
+        } catch (SQLException e) {
+            throw new ExceptionInInitializerError(e);
+        }
     }
 
     private static void initDB() {
@@ -19,44 +28,54 @@ public class MemberDB {
           "phone TEXT NOT NULL," +
           "type  TEXT NOT NULL," +
           "trainer BOOLEAN NOT NULL)";
-        try (Connection c = DriverManager.getConnection(DB_URL);
-             Statement  s = c.createStatement()) {
+        try (Statement s = connection.createStatement()) {
             s.execute(sql);
-        } catch (SQLException ex) { ex.printStackTrace(); }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static boolean emailExists(String email) {
         String sql = "SELECT 1 FROM members WHERE email = ?";
-        try (Connection c = DriverManager.getConnection(DB_URL);
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException ex) { ex.printStackTrace(); return false; }
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(); 
+            return false; 
+        }
     }
 
     public static void save(String first, String last, String email, String password, String phone, String type, boolean trainer) {
         String sql = "INSERT INTO members(first,last,email,pass,phone,type,trainer) VALUES (?,?,?,?,?,?,?)";
-        try (Connection c = DriverManager.getConnection(DB_URL);
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, first);
             ps.setString(2, last);
             ps.setString(3, email);
-            ps.setString(4, password);
+            ps.setString(4, BCrypt.hashpw(password, BCrypt.gensalt()));
             ps.setString(5, phone);
             ps.setString(6, type);
             ps.setBoolean(7, trainer);
             ps.executeUpdate();
-        } catch (SQLException ex) { ex.printStackTrace(); }
+        } catch (SQLException ex) { 
+            ex.printStackTrace(); 
+        }
     }
+
     public static boolean checkCredentials(String email, String password) {
-        String sql = "SELECT 1 FROM members WHERE email=? AND pass=?";
-        try (Connection c = DriverManager.getConnection(DB_URL);
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        String sql = "SELECT pass FROM members WHERE email=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
-            ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException ex) { ex.printStackTrace(); return false; }
+            if (rs.next()) {
+                return BCrypt.checkpw(password, rs.getString("pass"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();  
+        }
+        return false;
     }
+    private MemberDB() {}
 }
