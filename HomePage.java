@@ -12,7 +12,7 @@ public class HomePage {
         panel.setBackground(Color.WHITE);
 
         //image stuff
-        ImagePanel image1 = new ImagePanel("images/MainMenu.png", 0, 0, 0, 0);
+        ImagePanel image1 = new ImagePanel("images/MainMenu.png", 0, 0, 0, 0); //these are dummy values that will be overriden later
         image1.setOnClick(() -> { 
             if (!Auth.isLoggedIn()) {
                 MainMenuPage.show();
@@ -26,23 +26,21 @@ public class HomePage {
         image2.setOnClick(() -> AdminMenuPage.show());
         panel.add(image2);
         
-        ImagePanel image3 = new ImagePanel("images/Exit.png", 0, 0, 0, 0);
+        ImagePanel image3 = new ImagePanel("images/Exit.png", 0, 0, 0, 0); //these are dummy values that will be overriden later
         image3.setOnClick(() -> System.exit(0));
         panel.add(image3);
         
-        ImagePanel image4 = new ImagePanel("images/MainLogo.png", 0, 0, 0, 0);
+        ImagePanel image4 = new ImagePanel("images/MainLogo.png", 0, 0, 0, 0); //these are dummy values that will be overriden later
         panel.add(image4);
         
-        ImagePanel image5 = new ImagePanel("images/SmallLogo.png", 0, 0, 0, 0);
+        ImagePanel image5 = new ImagePanel("images/SmallLogo.png", 0, 0, 0, 0); //these are dummy values that will be overriden later
         panel.add(image5);
 
-        panel.addComponentListener(new ComponentAdapter() { //all the logic for resizing. Note buddy man component adapter
+        panel.addComponentListener(new ComponentAdapter() { //all the logic for resizing. This all allows for a stretchy window AND elements, as opposed to stiff. Note buddy man component adapter
             @Override //ComponentAdapter holds empty stuff. Override says we are overriding that empty stuff with our own
-            public void componentResized(ComponentEvent e) {
-                int w = panel.getWidth();
-                int h = panel.getHeight();
-                
-                // setBounds( X, Y, Width, Height )
+            public void componentResized(ComponentEvent e) { //you can probably just copy most of this
+                int w = panel.getWidth(); //and this
+                int h = panel.getHeight(); //and this
                 
                 // Stacked buttons on the right (approx 57% across the screen)
                 image1.setBounds((int)(w * 0.57), (int)(h * 0.21), (int)(w * 0.33), (int)(h * 0.09)); //.5 = 50% across the screen etc etc
