@@ -6,10 +6,15 @@ public class Main {
         
         SwingUtilities.invokeLater(() -> { //I heard this does really good shit for stability
         window = new JFrame("Home");
-        window.setSize(800, 600);
-        window.setUndecorated(false); //set to true for borderless
+        
+        //Let's address the window's scope
+        window.setSize(1280,720); //this is the INITIAL, DEFAULT size
+        window.setMinimumSize(new Dimension(800, 600)); //this is the MINIMUM size
+        window.setResizable(true); //this allows for resizing the window, but not smaller than the minimum size
+        
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        window.setUndecorated(false); //set to true for borderless
         window.setLayout(null); //for manual placement
         window.getContentPane().setBackground(Color.WHITE);
        
