@@ -1,3 +1,6 @@
 {
-  "java.project.referencedLibraries": ["libs/*.jar"]
+  "java.project.referencedLibraries": [
+    "libs/*.jar",
+    "d:\\qrcodegen-1.8.0.jar"
+  ]
 }
