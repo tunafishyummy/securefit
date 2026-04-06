@@ -5,8 +5,7 @@ import java.awt.event.*;
 public class ImagePanel extends JPanel {
     private Image image;
     private Runnable clickAction = null;
-    public ImagePanel(String filename, int x, int y, int width, int height) {
-        setBounds(x, y, width, height);
+    public ImagePanel(String filename) {
         setBackground(Color.WHITE);
 
         image = new ImageIcon(filename).getImage();
