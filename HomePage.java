@@ -36,6 +36,27 @@ public class HomePage {
         ImagePanel image5 = new ImagePanel("images/SmallLogo.png", 0, 0, 0, 0);
         panel.add(image5);
 
+        panel.addComponentListener(new ComponentAdapter() { //all the logic for resizing. Note buddy man component adapter
+            @Override //ComponentAdapter holds empty stuff. Override says we are overriding that empty stuff with our own
+            public void componentResized(ComponentEvent e) {
+                int w = panel.getWidth();
+                int h = panel.getHeight();
+                
+                // setBounds( X, Y, Width, Height )
+                
+                // Stacked buttons on the right (approx 57% across the screen)
+                image1.setBounds((int)(w * 0.57), (int)(h * 0.21), (int)(w * 0.33), (int)(h * 0.09));
+                image2.setBounds((int)(w * 0.57), (int)(h * 0.32), (int)(w * 0.33), (int)(h * 0.09));
+                image3.setBounds((int)(w * 0.57), (int)(h * 0.43), (int)(w * 0.33), (int)(h * 0.09));
+                
+                // Big logo on the left
+                image4.setBounds(0, (int)(h * 0.09), (int)(w * 0.40), (int)(h * 0.67));
+                
+                // Small logo top left (fixed ITS FIXED NOTE ITS FIXED LIKE UNMOVING)
+                image5.setBounds(10, 10, 50, 50); 
+            }
+        });
+
         Main.window.add(panel);
         Main.window.revalidate();
         Main.window.repaint();
