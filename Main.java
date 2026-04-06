@@ -15,7 +15,7 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         window.setUndecorated(false); //set to true for borderless
-        window.setLayout(null); //for manual placement
+        window.setLayout(new BorderLayout()); //as opposed to null, BorderLayout allows elements to fill the space when the window is stretched
         window.getContentPane().setBackground(Color.WHITE);
        
         HomePage.show();
