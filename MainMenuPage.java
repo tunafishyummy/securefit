@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent; //This detects when the window is resized and is used by ComponentAdapter
+import java.awt.event.ComponentAdapter; //This is the "listener"
 
 public class MainMenuPage {
     public static void show() {
