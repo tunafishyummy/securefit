@@ -12,7 +12,7 @@ public class HomePage {
         panel.setBackground(Color.WHITE);
 
         //image stuff
-        ImagePanel image1 = new ImagePanel("images/MainMenu.png"); //these are dummy values that will be overriden later
+        ImagePanel image1 = new ImagePanel("images/MainMenu.png");
         image1.setOnClick(() -> { 
             if (!Auth.isLoggedIn()) {
                 MainMenuPage.show();
@@ -22,18 +22,18 @@ public class HomePage {
         });
         panel.add(image1);
         
-        ImagePanel image2 = new ImagePanel("images/AdminMenu.png"); //these are dummy values that will be overriden later
+        ImagePanel image2 = new ImagePanel("images/AdminMenu.png");
         image2.setOnClick(() -> AdminMenuPage.show());
         panel.add(image2);
         
-        ImagePanel image3 = new ImagePanel("images/Exit.png"); //these are dummy values that will be overriden later
+        ImagePanel image3 = new ImagePanel("images/Exit.png");
         image3.setOnClick(() -> System.exit(0));
         panel.add(image3);
         
-        ImagePanel image4 = new ImagePanel("images/MainLogo.png"); //these are dummy values that will be overriden later
+        ImagePanel image4 = new ImagePanel("images/MainLogo.png");
         panel.add(image4);
         
-        ImagePanel image5 = new ImagePanel("images/SmallLogo.png"); //these are dummy values that will be overriden later
+        ImagePanel image5 = new ImagePanel("images/SmallLogo.png");
         panel.add(image5);
 
         panel.addComponentListener(new ComponentAdapter() { //all the logic for resizing. This all allows for a stretchy window AND elements, as opposed to stiff. Note buddy man component adapter
