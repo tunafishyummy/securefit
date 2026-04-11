@@ -43,15 +43,15 @@ public class AdminMenuPage {
         image5.setOnClick(() -> RevokedMembershipPage.show());
         panel.add(image5);
 
-        ImagePanel image6 = new ImagePanel("images/Revoked Membership List.png");
+        ImagePanel image6 = new ImagePanel("images/RevokedMembershipList.png");
         image6.setOnClick(() -> RevokedMembershipListPage.show());
         panel.add(image6);
 
-        ImagePanel image7 = new ImagePanel("images/Active Members List.png");
+        ImagePanel image7 = new ImagePanel("images/ActiveMembersList.png");
         image7.setOnClick(() -> ActiveMembersListPage.show());
         panel.add(image7);
 
-        ImagePanel image8 = new ImagePanel("images/Inactive Members List.png");
+        ImagePanel image8 = new ImagePanel("images/InactiveMembersList.png");
         image8.setOnClick(() -> InactiveMembersListPage.show());
         panel.add(image8);
 
