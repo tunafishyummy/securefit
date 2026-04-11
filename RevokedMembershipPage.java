@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.awt.*;
+
 public class RevokedMembershipPage {
     public static void show() {
         Main.window.getContentPane().removeAll();
