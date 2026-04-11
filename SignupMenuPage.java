@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class SignupMenuPage {
     private static String firstName = "";
@@ -13,69 +15,64 @@ public class SignupMenuPage {
     public static void show() {
         Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
-        panel.setBounds(0, 0, Main.window.getWidth(), Main.window.getHeight());
         panel.setBackground(Color.WHITE);
 
-        ImagePanel image1 = new ImagePanel("images/SmallLogo.png", 1, 1, 50, 50);
+        ImagePanel image1 = new ImagePanel("images/SmallLogo.png");
         image1.setOnClick(() -> HomePage.show());
         panel.add(image1);
 
         JLabel title1 = new JLabel("GYM REGISTRATION");
         title1.setFont(new Font("Prompt", Font.BOLD, 64));
-        title1.setBounds(642, 158, 684, 56);
         panel.add(title1);
 
         JLabel firstNameLabel = new JLabel("FIRST NAME");
-        firstNameLabel.setBounds(800, 250, 100, 20);
         panel.add(firstNameLabel);
         JTextField firstNameField = new JTextField();
-        firstNameField.setBounds(800, 270, 300, 30);
         panel.add(firstNameField);
 
         JLabel lastNameLabel = new JLabel("LAST NAME");
-        lastNameLabel.setBounds(800, 320, 100, 20);
         panel.add(lastNameLabel);
         JTextField lastNameField = new JTextField();
-        lastNameField.setBounds(800, 340, 300, 30);
         panel.add(lastNameField);
 
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
-        emailLabel.setBounds(800, 390, 120, 20);
         panel.add(emailLabel);
         JTextField emailField = new JTextField();
-        emailField.setBounds(800, 410, 300, 30);
         panel.add(emailField);
 
         JLabel passwordLabel = new JLabel("PASSWORD");
-        passwordLabel.setBounds(800, 460, 100, 20);
         panel.add(passwordLabel);
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(800, 480, 300, 30);
         panel.add(passwordField);
 
         JLabel phoneLabel = new JLabel("PHONE NUMBER");
-        phoneLabel.setBounds(800, 530, 120, 20);
         panel.add(phoneLabel);
         JTextField phoneField = new JTextField();
-        phoneField.setBounds(800, 550, 300, 30);
         panel.add(phoneField);
 
         JLabel membershipLabel = new JLabel("TYPE OF MEMBERSHIP");
-        membershipLabel.setBounds(800, 600, 150, 20);
         panel.add(membershipLabel);
         JComboBox<String> membershipBox = new JComboBox<>(new String[]{"MONTHLY", "YEARLY", "WEEKLY", "ONE TIME SESSION"});
-        membershipBox.setBounds(800, 620, 150, 30);
+        membershipBox.setSelectedItem(membershipType);
         panel.add(membershipBox);
 
         JCheckBox trainerCheckBox = new JCheckBox("WITH TRAINER");
-        trainerCheckBox.setBounds(970, 620, 120, 30);
+        trainerCheckBox.setSelected(withTrainer);
         panel.add(trainerCheckBox);
 
         JButton registerButton = new JButton("Register");
-        registerButton.setBounds(800, 680, 150, 40);
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(Color.WHITE);
         panel.add(registerButton);
+        firstNameField.setText(firstName);
+        lastNameField.setText(lastName);
+        emailField.setText(email);
+        passwordField.setText(password);
+        phoneField.setText(phoneNumber);
+
+        membershipBox.addActionListener(e -> membershipType = (String) membershipBox.getSelectedItem());
+        trainerCheckBox.addActionListener(e -> withTrainer = trainerCheckBox.isSelected());
+
         registerButton.addActionListener(e ->  {
             firstName = firstNameField.getText().trim();
             lastName = lastNameField.getText().trim();
@@ -99,6 +96,39 @@ public class SignupMenuPage {
             }
             MemberDB.save(firstName, lastName, email, password, phoneNumber, membershipType, withTrainer);
             JOptionPane.showMessageDialog(null, "Account created");
+        });
+
+        panel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                int w = panel.getWidth();
+                int h = panel.getHeight();
+
+                image1.setBounds(10, 10, 50, 50);
+
+                title1.setBounds((int) (w * 0.335), (int) (h * 0.146), (int) (w * 0.356), 56);
+
+                firstNameLabel.setBounds((int) (w * 0.417), (int) (h * 0.231), 100, 20);
+                firstNameField.setBounds((int) (w * 0.417), (int) (h * 0.250), (int) (w * 0.156), 30);
+
+                lastNameLabel.setBounds((int) (w * 0.417), (int) (h * 0.296), 100, 20);
+                lastNameField.setBounds((int) (w * 0.417), (int) (h * 0.315), (int) (w * 0.156), 30);
+
+                emailLabel.setBounds((int) (w * 0.417), (int) (h * 0.361), 120, 20);
+                emailField.setBounds((int) (w * 0.417), (int) (h * 0.380), (int) (w * 0.156), 30);
+
+                passwordLabel.setBounds((int) (w * 0.417), (int) (h * 0.426), 100, 20);
+                passwordField.setBounds((int) (w * 0.417), (int) (h * 0.444), (int) (w * 0.156), 30);
+
+                phoneLabel.setBounds((int) (w * 0.417), (int) (h * 0.491), 120, 20);
+                phoneField.setBounds((int) (w * 0.417), (int) (h * 0.509), (int) (w * 0.156), 30);
+
+                membershipLabel.setBounds((int) (w * 0.417), (int) (h * 0.556), 150, 20);
+                membershipBox.setBounds((int) (w * 0.417), (int) (h * 0.574), (int) (w * 0.078), 30);
+                trainerCheckBox.setBounds((int) (w * 0.505), (int) (h * 0.574), (int) (w * 0.100), 30);
+
+                registerButton.setBounds((int) (w * 0.417), (int) (h * 0.630), 150, 40);
+            }
         });
         
         Main.window.add(panel);
