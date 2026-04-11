@@ -1,4 +1,7 @@
-public class RevokedMembershipPage {
+import javax.swing.*;
+import java.awt.*;
+
+public class ActiveMembersListPage {
     public static void show() {
         Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
