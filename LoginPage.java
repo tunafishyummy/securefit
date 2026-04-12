@@ -26,6 +26,17 @@ public class LoginPage {
         JPasswordField passwordField = new JPasswordField();
         panel.add(passwordField);
 
+        // --- Back Button ---
+        JButton backBtn = new JButton("Back");
+        backBtn.setFont(new Font("Arial", Font.BOLD, 18));
+        backBtn.setForeground(Color.BLACK);
+        backBtn.setContentAreaFilled(false);
+        backBtn.setBorderPainted(false);
+        backBtn.setFocusPainted(false);
+        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        backBtn.addActionListener(e -> MainMenuPage.show());
+        panel.add(backBtn);
+
         JButton signInButton = new JButton("Sign in");
         signInButton.setBackground(Color.BLACK);
         signInButton.setForeground(Color.WHITE);
@@ -67,6 +78,8 @@ public class LoginPage {
                 passwordField.setBounds((int) (w * 0.422), (int) (h * 0.444), (int) (w * 0.156), 30);
 
                 signInButton.setBounds((int) (w * 0.458), (int) (h * 0.630), 150, 40);
+
+                backBtn.setBounds(20, (int) (h * 0.90), 100, 35);
             }
         });
     
