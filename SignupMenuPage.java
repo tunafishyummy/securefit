@@ -67,6 +67,17 @@ public class SignupMenuPage {
         registerButton.setForeground(Color.WHITE);
         panel.add(registerButton);
 
+        // --- Back Button ---
+        JButton backBtn = new JButton("Back");
+        backBtn.setFont(new Font("Arial", Font.BOLD, 18));
+        backBtn.setForeground(Color.BLACK);
+        backBtn.setContentAreaFilled(false);
+        backBtn.setBorderPainted(false);
+        backBtn.setFocusPainted(false);
+        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        backBtn.addActionListener(e -> MainMenuPage.show());
+        panel.add(backBtn);
+
         membershipBox.addActionListener(e -> membershipType = (String) membershipBox.getSelectedItem());
         trainerCheckBox.addActionListener(e -> withTrainer = trainerCheckBox.isSelected());
 
@@ -104,9 +115,9 @@ public class SignupMenuPage {
                 membershipBox.setBounds((int) (w * 0.417), (int) (h * 0.574), (int) (w * 0.078), 30);
                 trainerCheckBox.setBounds((int) (w * 0.505), (int) (h * 0.574), (int) (w * 0.100), 30);
                 registerButton.setBounds((int) (w * 0.417), (int) (h * 0.630), 150, 40);
+                backBtn.setBounds(20, (int) (h * 0.90), 100, 35);
             }
         });
-
         Main.window.add(panel);
         Main.window.revalidate();
         Main.window.repaint();
