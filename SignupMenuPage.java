@@ -1,7 +1,9 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.*;
+
 
 public class SignupMenuPage {
     private static String firstName = "";
@@ -27,27 +29,27 @@ public class SignupMenuPage {
 
         JLabel firstNameLabel = new JLabel("FIRST NAME");
         panel.add(firstNameLabel);
-        JTextField firstNameField = new JTextField();
+        JTextField firstNameField = new JTextField(firstName);
         panel.add(firstNameField);
 
         JLabel lastNameLabel = new JLabel("LAST NAME");
         panel.add(lastNameLabel);
-        JTextField lastNameField = new JTextField();
+        JTextField lastNameField = new JTextField(lastName);
         panel.add(lastNameField);
 
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
         panel.add(emailLabel);
-        JTextField emailField = new JTextField();
+        JTextField emailField = new JTextField(email);
         panel.add(emailField);
 
         JLabel passwordLabel = new JLabel("PASSWORD");
         panel.add(passwordLabel);
-        JPasswordField passwordField = new JPasswordField();
+        JPasswordField passwordField = new JPasswordField(password);
         panel.add(passwordField);
 
         JLabel phoneLabel = new JLabel("PHONE NUMBER");
         panel.add(phoneLabel);
-        JTextField phoneField = new JTextField();
+        JTextField phoneField = new JTextField(phoneNumber);
         panel.add(phoneField);
 
         JLabel membershipLabel = new JLabel("TYPE OF MEMBERSHIP");
@@ -64,38 +66,20 @@ public class SignupMenuPage {
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(Color.WHITE);
         panel.add(registerButton);
-        firstNameField.setText(firstName);
-        lastNameField.setText(lastName);
-        emailField.setText(email);
-        passwordField.setText(password);
-        phoneField.setText(phoneNumber);
 
         membershipBox.addActionListener(e -> membershipType = (String) membershipBox.getSelectedItem());
         trainerCheckBox.addActionListener(e -> withTrainer = trainerCheckBox.isSelected());
 
-        registerButton.addActionListener(e ->  {
+        registerButton.addActionListener(e -> {
             firstName = firstNameField.getText().trim();
             lastName = lastNameField.getText().trim();
             email = emailField.getText().trim();
             password = new String(passwordField.getPassword()).trim();
             phoneNumber = phoneField.getText().trim();
 
-            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()     || password.isEmpty() || phoneNumber.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please fill in every field.", "Missing info", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-
-                JOptionPane.showMessageDialog(null, "Enter a valid e-mail address.", "Invalid e-mail", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            if (MemberDB.emailExists(email)) {
-                JOptionPane.showMessageDialog(null, "E-mail already registered.", "Duplicate", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
             MemberDB.save(firstName, lastName, email, password, phoneNumber, membershipType, withTrainer);
-            JOptionPane.showMessageDialog(null, "Account created");
+            BufferedImage qrImage = QrCodeGen.generateQR(email);
+            QrSuccess.show(qrImage, firstName);
         });
 
         panel.addComponentListener(new ComponentAdapter() {
@@ -105,32 +89,24 @@ public class SignupMenuPage {
                 int h = panel.getHeight();
 
                 image1.setBounds(10, 10, 50, 50);
-
                 title1.setBounds((int) (w * 0.335), (int) (h * 0.146), (int) (w * 0.356), 56);
-
                 firstNameLabel.setBounds((int) (w * 0.417), (int) (h * 0.231), 100, 20);
                 firstNameField.setBounds((int) (w * 0.417), (int) (h * 0.250), (int) (w * 0.156), 30);
-
                 lastNameLabel.setBounds((int) (w * 0.417), (int) (h * 0.296), 100, 20);
                 lastNameField.setBounds((int) (w * 0.417), (int) (h * 0.315), (int) (w * 0.156), 30);
-
                 emailLabel.setBounds((int) (w * 0.417), (int) (h * 0.361), 120, 20);
                 emailField.setBounds((int) (w * 0.417), (int) (h * 0.380), (int) (w * 0.156), 30);
-
                 passwordLabel.setBounds((int) (w * 0.417), (int) (h * 0.426), 100, 20);
                 passwordField.setBounds((int) (w * 0.417), (int) (h * 0.444), (int) (w * 0.156), 30);
-
                 phoneLabel.setBounds((int) (w * 0.417), (int) (h * 0.491), 120, 20);
                 phoneField.setBounds((int) (w * 0.417), (int) (h * 0.509), (int) (w * 0.156), 30);
-
                 membershipLabel.setBounds((int) (w * 0.417), (int) (h * 0.556), 150, 20);
                 membershipBox.setBounds((int) (w * 0.417), (int) (h * 0.574), (int) (w * 0.078), 30);
                 trainerCheckBox.setBounds((int) (w * 0.505), (int) (h * 0.574), (int) (w * 0.100), 30);
-
                 registerButton.setBounds((int) (w * 0.417), (int) (h * 0.630), 150, 40);
             }
         });
-        
+
         Main.window.add(panel);
         Main.window.revalidate();
         Main.window.repaint();

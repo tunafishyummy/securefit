@@ -1,6 +1,11 @@
 {
-  "java.project.referencedLibraries": [
-    "libs/*.jar",
-    "d:\\qrcodegen-1.8.0.jar"
-  ]
+  "java.project.referencedLibraries": {
+    "include": [
+      "libs/*.jar",
+      "d:\\qrcodegen-1.8.0.jar"
+    ],
+    "exclude": [
+      "libs/qrcodegen-1.8.0.jar"
+    ]
+  }
 }
