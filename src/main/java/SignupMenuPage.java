@@ -124,6 +124,8 @@ public class SignupMenuPage {
 
             MemberDB.save(firstName, lastName, email, password, phoneNumber, membershipType, withTrainer);
             BufferedImage qrImage = QrCodeGen.generateQR(email);
+            String safeFileName = firstName + "_" + lastName;
+            QrCodeGen.saveQRImage(qrImage, safeFileName);
             QrSuccess.show(qrImage, firstName);
         });
 
