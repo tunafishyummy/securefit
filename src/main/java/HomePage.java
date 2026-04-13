@@ -23,7 +23,7 @@ public class HomePage {
         panel.add(image1);
         
         ImagePanel image2 = new ImagePanel("images/AdminMenu.png");
-        image2.setOnClick(() -> AdminMenuPage.show());
+        image2.setOnClick(() -> AdminLoginPage.show());
         panel.add(image2);
         
         ImagePanel image3 = new ImagePanel("images/Exit.png");
