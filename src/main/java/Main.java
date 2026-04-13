@@ -15,6 +15,7 @@ public class Main {
         window.setSize(1280,720); //this is the INITIAL, DEFAULT size
         window.setMinimumSize(new Dimension(800, 600)); //this is the MINIMUM size
         window.setResizable(true); //this allows for resizing the window, but not smaller than the minimum size
+        window.setLocationRelativeTo(null);
         
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
