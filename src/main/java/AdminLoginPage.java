@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import java.awt.Cursor;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -45,12 +45,13 @@ public class AdminLoginPage {
 
         // --- Back Button ---
         JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Arial", Font.PLAIN, 13));
-        backBtn.setForeground(Color.GRAY);
+        backBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        backBtn.setForeground(Color.BLACK);
         backBtn.setContentAreaFilled(false);
         backBtn.setBorderPainted(false);
         backBtn.setFocusPainted(false);
-        backBtn.addActionListener(e -> MainMenuPage.show());
+        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        backBtn.addActionListener(e -> HomePage.show());
         panel.add(backBtn);
 
         signInBtn.addActionListener(e -> {
