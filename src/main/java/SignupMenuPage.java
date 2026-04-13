@@ -151,8 +151,7 @@ public class SignupMenuPage {
             try {
                 MemberDB.save(firstName, lastName, email, password, phoneNumber, membershipType, withTrainer);
                 BufferedImage qrImage = QrCodeGen.generateQR(email);
-                String safeFileName = firstName + "_" + lastName;
-                QrCodeGen.saveQRImage(qrImage, safeFileName);
+                QrCodeGen.saveQRImage(qrImage, email);
                 QrSuccess.show(qrImage, firstName);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(Main.window, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

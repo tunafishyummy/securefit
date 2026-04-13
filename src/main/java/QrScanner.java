@@ -21,12 +21,12 @@ public class QrScanner {
             return;
         }
 
-        // 1. Create the Panel to show the video feed
+        
         WebcamPanel panel = new WebcamPanel(webcam);
         panel.setFPSDisplayed(true);
         panel.setMirrored(true);
 
-        // 2. Switch the UI: Clear MainMenu and show the Camera
+        
         Main.window.getContentPane().removeAll();
         JPanel container = new JPanel(new BorderLayout());
         container.add(panel, BorderLayout.CENTER);
@@ -35,7 +35,7 @@ public class QrScanner {
         Main.window.revalidate();
         Main.window.repaint();
 
-        // 3. Start the detection thread
+        
         new Thread(() -> {
             while (true) {
                 if (!webcam.isOpen()) continue;

@@ -1,7 +1,9 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class LoggedInMainMenuPage {
     public static void show() {
@@ -25,6 +27,12 @@ public class LoggedInMainMenuPage {
         panel.add(image4);
 
         ImagePanel image5 = new ImagePanel("images/QRCodeImage.png");
+        image5.setOnClick(() -> {
+        String email = Auth.getCurrentUser();
+        if (email != null) {
+        QrImage.show(email);
+        }
+        });
         panel.add(image5);
 
         ImagePanel image6 = new ImagePanel("images/UpgradeMembership.png");
