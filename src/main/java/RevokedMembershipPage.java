@@ -26,27 +26,29 @@ public class RevokedMembershipPage {
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
-        // --- Enter Name ---
+        // --- Enter Name LABEL (kept) ---
         JLabel nameLabel = new JLabel("Enter Name");
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         panel.add(nameLabel);
 
+        // --- Name Field (EMPTY) ---
         JTextField nameField = new JTextField();
         nameField.setFont(new Font("Arial", Font.PLAIN, 14));
-        nameField.setForeground(Color.GRAY);
-        nameField.setText("ENTER MEMBER NAME");
+        nameField.setForeground(Color.BLACK);
+        nameField.setText(""); // ✅ no placeholder
         nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         panel.add(nameField);
 
-        // --- Reason for Revoking ---
+        // --- Reason LABEL (kept) ---
         JLabel reasonLabel = new JLabel("Reason for revoking");
         reasonLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         panel.add(reasonLabel);
 
+        // --- Reason Field (EMPTY) ---
         JTextField reasonField = new JTextField();
         reasonField.setFont(new Font("Arial", Font.PLAIN, 14));
-        reasonField.setForeground(Color.GRAY);
-        reasonField.setText("ENTER REASON");
+        reasonField.setForeground(Color.BLACK);
+        reasonField.setText(""); // ✅ no placeholder
         reasonField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         panel.add(reasonField);
 
@@ -61,11 +63,11 @@ public class RevokedMembershipPage {
             String name   = nameField.getText().trim();
             String reason = reasonField.getText().trim();
 
-            if (name.isEmpty() || name.equals("ENTER MEMBER NAME")) {
+            if (name.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Please enter a member name.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (reason.isEmpty() || reason.equals("ENTER REASON")) {
+            if (reason.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Please enter a reason.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -76,18 +78,20 @@ public class RevokedMembershipPage {
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, reason);
                 ps.setString(2, name);
+
                 int rows = ps.executeUpdate();
                 if (rows > 0) {
                     JOptionPane.showMessageDialog(panel,
                         "Membership revoked for: " + name + "\nReason: " + reason,
                         "Revoked", JOptionPane.INFORMATION_MESSAGE);
-                    nameField.setText("ENTER MEMBER NAME");
-                    reasonField.setText("ENTER REASON");
+                    nameField.setText("");
+                    reasonField.setText("");
                 } else {
                     JOptionPane.showMessageDialog(panel,
                         "Member not found: " + name,
                         "Error", JOptionPane.ERROR_MESSAGE);
                 }
+
             } catch (SQLException ex) {
                 System.err.println("Error revoking member: " + ex.getMessage());
             }
