@@ -100,17 +100,63 @@ public static String[] getMemberData(String email) {
     return data;
 }
 
-public static void updateMember(String oldEmail, String first, String last, String newEmail, String phone) {
-    String sql = "UPDATE members SET first = ?, last = ?, email = ?, phone = ? WHERE email = ?";
+public static boolean updateMember(String oldEmail, String first, String last, String newEmail, String phone, String newPassword) {
+    String sql;
+    boolean updatingPassword = newPassword != null && !newPassword.isEmpty();
+
+    if (updatingPassword) {
+        sql = "UPDATE members SET first = ?, last = ?, email = ?, phone = ?, pass = ? WHERE email = ?";
+    } else {
+        sql = "UPDATE members SET first = ?, last = ?, email = ?, phone = ? WHERE email = ?";
+    }
+
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setString(1, first);
         ps.setString(2, last);
         ps.setString(3, newEmail);
         ps.setString(4, phone);
-        ps.setString(5, oldEmail);
+        
+        if (updatingPassword) {
+            ps.setString(5, org.mindrot.jbcrypt.BCrypt.hashpw(newPassword, org.mindrot.jbcrypt.BCrypt.gensalt()));
+            ps.setString(6, oldEmail);
+        } else {
+            ps.setString(5, oldEmail);
+        }
+
+        int rowsAffected = ps.executeUpdate();
+        System.out.println("Rows updated: " + rowsAffected); // DEBUG: Should be 1
+        return rowsAffected > 0;
+    } catch (SQLException ex) {
+        System.err.println("SQL Update Error: " + ex.getMessage());
+        return false;
+    }
+}
+public static String[] getMembershipStatus(String email) {
+    String[] status = new String[2]; // status[0] = type, status[1] = trainer boolean
+    String sql = "SELECT type, trainer FROM members WHERE email = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, email);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                status[0] = rs.getString("type");
+                status[1] = String.valueOf(rs.getBoolean("trainer"));
+            }
+        }
+    } catch (SQLException ex) {
+        System.err.println("Error fetching membership: " + ex.getMessage());
+    }
+    return status;
+}
+
+public static void upgradeMembership(String email, String newType, boolean newTrainer) {
+    String sql = "UPDATE members SET type = ?, trainer = ? WHERE email = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, newType);
+        ps.setBoolean(2, newTrainer);
+        ps.setString(3, email);
         ps.executeUpdate();
     } catch (SQLException ex) {
-        System.err.println("Error updating member: " + ex.getMessage());
+        System.err.println("Error updating membership: " + ex.getMessage());
     }
 }
     public static boolean checkCredentials(String email, String password) {
