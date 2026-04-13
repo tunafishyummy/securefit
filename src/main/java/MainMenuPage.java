@@ -26,7 +26,7 @@ public class MainMenuPage {
         panel.add(image4);
 
         ImagePanel image5 = new ImagePanel("images/Login.png");
-        image5.setOnClick(() -> LoginPage.show());
+        image5.setOnClick(() -> LoggedInMainMenuPage.show());
         panel.add(image5);
 
         ImagePanel image6 = new ImagePanel("images/ScanQRCode.png");

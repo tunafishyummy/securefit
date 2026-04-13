@@ -20,6 +20,17 @@ public class LoggedInMainMenuPage {
         image3.setOnClick(() -> HomePage.show());
         panel.add(image3);
 
+        ImagePanel image4 = new ImagePanel("images/PersonalInfo.png");
+        image4.setOnClick(() -> PersonalInfoPage.show());
+        panel.add(image4);
+
+        ImagePanel image5 = new ImagePanel("images/QRCodeImage.png");
+        panel.add(image5);
+
+        ImagePanel image6 = new ImagePanel("images/UpgradeMembership.png");
+        image6.setOnClick(() -> UpgradeMembershipPage.show());
+        panel.add(image6);
+
         JButton logOutButton = new JButton("Log out");
         logOutButton.setBackground(Color.BLACK);
         logOutButton.setForeground(Color.WHITE);
@@ -35,9 +46,12 @@ public class LoggedInMainMenuPage {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
 
-                image1.setBounds(10, 10, 50, 50);
-                image2.setBounds((int) (w * 0.563), (int) (h * 0.093), (int) (w * 0.404), (int) (h * 0.674));
-                image3.setBounds((int) (w * 0.023), (int) (h * 0.283), (int) (w * 0.104), (int) (h * 0.070));
+                image1.setBounds((int)(w * 0.005), (int)(h * 0.009), (int)(w * 0.03), (int)(h * 0.05)); 
+                image2.setBounds((int)(w * 0.56), (int)(h * 0.09), (int)(w * 0.40), (int)(h * 0.67));
+                image3.setBounds((int)(w * 0.0229), (int)(h * 0.28), (int)(w * 0.10), (int)(h * 0.07));
+                image4.setBounds((int)(w * 0.0229), (int)(h * 0.38), (int)(w * 0.15), (int)(h * 0.07));
+                image5.setBounds((int)(w * 0.0229), (int)(h * 0.48), (int)(w * 0.17), (int)(h * 0.07));
+                image6.setBounds((int)(w * 0.0229), (int)(h * 0.59), (int)(w * 0.19), (int)(h * 0.07));
                 logOutButton.setBounds((int) (w * 0.922), 10, 120, 40);
             }
         });
