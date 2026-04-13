@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.*;
@@ -88,6 +87,8 @@ public class LoginPage {
                 passwordField.setBounds((int) (w * 0.422), (int) (h * 0.444), (int) (w * 0.156), 30);
 
                 signInButton.setBounds((int) (w * 0.458), (int) (h * 0.630), 150, 40);
+
+                backBtn.setBounds(20, (int) (h * 0.90), 100, 35);
             }
         });
     
