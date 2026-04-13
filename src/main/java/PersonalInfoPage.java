@@ -1,15 +1,15 @@
-
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class PersonalInfoPage {
@@ -21,33 +21,31 @@ public class PersonalInfoPage {
         String currentEmail = Auth.getCurrentUser();
         String[] data = MemberDB.getMemberData(currentEmail);
 
-        ImagePanel image1 = new ImagePanel("images/SmallLogo.png");
-        image1.setOnClick(() -> HomePage.show());
-        panel.add(image1);
+        ImagePanel logo = new ImagePanel("images/SmallLogo.png");
+        logo.setOnClick(() -> LoggedInMainMenuPage.show());
+        panel.add(logo);
 
-        JLabel title1 = new JLabel("EDIT PERSONAL INFO");
-        title1.setFont(new Font("Prompt", Font.BOLD, 36));
-        panel.add(title1);
+        JLabel title = new JLabel("EDIT PERSONAL INFO");
+        title.setFont(new Font("Prompt", Font.BOLD, 36));
+        panel.add(title);
 
-        JLabel firstNameLabel = new JLabel("FIRST NAME");
-        panel.add(firstNameLabel);
-        JTextField firstNameField = new JTextField(data[0]);
-        panel.add(firstNameField);
-
-        JLabel lastNameLabel = new JLabel("LAST NAME");
-        panel.add(lastNameLabel);
-        JTextField lastNameField = new JTextField(data[1]);
-        panel.add(lastNameField);
-
+        // Labels & Fields
+        JLabel firstLabel = new JLabel("FIRST NAME");
+        JTextField firstField = new JTextField(data[0]);
+        JLabel lastLabel = new JLabel("LAST NAME");
+        JTextField lastField = new JTextField(data[1]);
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
-        panel.add(emailLabel);
         JTextField emailField = new JTextField(data[2]);
-        panel.add(emailField);
-
         JLabel phoneLabel = new JLabel("PHONE NUMBER");
-        panel.add(phoneLabel);
         JTextField phoneField = new JTextField(data[3]);
-        panel.add(phoneField);
+        JLabel passLabel = new JLabel("NEW PASSWORD (LEAVE BLANK TO KEEP)");
+        JPasswordField passField = new JPasswordField();
+
+        panel.add(firstLabel); panel.add(firstField);
+        panel.add(lastLabel); panel.add(lastField);
+        panel.add(emailLabel); panel.add(emailField);
+        panel.add(phoneLabel); panel.add(phoneField);
+        panel.add(passLabel); panel.add(passField);
 
         JButton saveButton = new JButton("Save Changes");
         saveButton.setBackground(Color.BLACK);
@@ -55,73 +53,72 @@ public class PersonalInfoPage {
         saveButton.setFont(new Font("Arial", Font.BOLD, 14));
         panel.add(saveButton);
 
-        JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        backBtn.setForeground(Color.BLACK);
-        backBtn.setContentAreaFilled(false);
-        backBtn.setBorderPainted(false);
-        backBtn.setFocusPainted(false);
-        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        backBtn.addActionListener(e -> LoggedInMainMenuPage.show());
-        panel.add(backBtn);
-
         saveButton.addActionListener(e -> {
-            String nFirst = firstNameField.getText().trim();
-            String nLast = lastNameField.getText().trim();
+            String nFirst = firstField.getText().trim();
+            String nLast = lastField.getText().trim();
             String nEmail = emailField.getText().trim();
             String nPhone = phoneField.getText().trim();
+            String nPass = new String(passField.getPassword()).trim();
 
-            if (nFirst.isEmpty() || nEmail.isEmpty()) {
-                JOptionPane.showMessageDialog(Main.window, "First Name and Email are required.");
+            if (nFirst.isEmpty() || nLast.isEmpty() || nEmail.isEmpty() || nPhone.isEmpty()) {
+                JOptionPane.showMessageDialog(Main.window, "All fields except password are required.", "Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            if (!nEmail.equalsIgnoreCase(currentEmail)) {
-                if (MemberDB.emailExists(nEmail)) {
-                    JOptionPane.showMessageDialog(Main.window, "Email already exists.");
-                    return;
+            boolean isEmailChanged = !nEmail.equalsIgnoreCase(currentEmail);
+            boolean success = MemberDB.updateMember(currentEmail, nFirst, nLast, nEmail, nPhone, nPass);
+
+            if (success) {
+                if (isEmailChanged) {
+                    // 1. Force directory check
+                    File dir = new File("qrcodes");
+                    if (!dir.exists()) dir.mkdirs();
+
+                    // 2. Generate and Save
+                    BufferedImage newQr = QrCodeGen.generateQR(nEmail);
+                    QrCodeGen.saveQRImage(newQr, nEmail);
+                    
+                    // 3. Update Session
+                    Auth.login(nEmail);
+                    
+                    // 4. GO STRAIGHT TO QR IMAGE (No JOptionPane)
+                    QrImage.show(nEmail); 
+                } else {
+                    // Normal update: show success and go to Menu
+                    JOptionPane.showMessageDialog(Main.window, "Profile updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    LoggedInMainMenuPage.show();
                 }
-                
-                MemberDB.updateMember(currentEmail, nFirst, nLast, nEmail, nPhone);
-                
-                // Regenerate QR because email changed
-                BufferedImage newQr = QrCodeGen.generateQR(nEmail);
-                QrCodeGen.saveQRImage(newQr, nEmail);
-                
-                Auth.login(nEmail); 
-                JOptionPane.showMessageDialog(Main.window, "Profile and QR Code Updated!");
             } else {
-                MemberDB.updateMember(currentEmail, nFirst, nLast, nEmail, nPhone);
-                JOptionPane.showMessageDialog(Main.window, "Profile Updated!");
+                JOptionPane.showMessageDialog(Main.window, "Update failed. Email might already be in use.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            LoggedInMainMenuPage.show();
         });
 
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                int w = panel.getWidth();
-                int h = panel.getHeight();
-                double col = 0.35;
-                double fw  = 0.30;
+                int w = panel.getWidth(), h = panel.getHeight();
+                double colX = 0.35, fieldW = 0.30;
+                int startY = (int)(h * 0.15), spacing = 65;
 
-                image1.setBounds(10, 10, 50, 50);
-                title1.setBounds((int)(w * 0.28), (int)(h * 0.06), (int)(w * 0.44), 45);
+                logo.setBounds(10, 10, 50, 50);
+                title.setBounds((int)(w * 0.28), (int)(h * 0.05), (int)(w * 0.5), 45);
                 
-                firstNameLabel.setBounds((int)(w * col), (int)(h * 0.160), (int)(w * fw), 18);
-                firstNameField.setBounds((int)(w * col), (int)(h * 0.185), (int)(w * fw), 28);
+                firstLabel.setBounds((int)(w * colX), startY, (int)(w * fieldW), 20);
+                firstField.setBounds((int)(w * colX), startY + 22, (int)(w * fieldW), 30);
                 
-                lastNameLabel.setBounds((int)(w * col), (int)(h * 0.240), (int)(w * fw), 18);
-                lastNameField.setBounds((int)(w * col), (int)(h * 0.265), (int)(w * fw), 28);
+                lastLabel.setBounds((int)(w * colX), startY + spacing, (int)(w * fieldW), 20);
+                lastField.setBounds((int)(w * colX), startY + spacing + 22, (int)(w * fieldW), 30);
                 
-                emailLabel.setBounds((int)(w * col), (int)(h * 0.320), (int)(w * fw), 18);
-                emailField.setBounds((int)(w * col), (int)(h * 0.345), (int)(w * fw), 28);
+                emailLabel.setBounds((int)(w * colX), startY + (spacing * 2), (int)(w * fieldW), 20);
+                emailField.setBounds((int)(w * colX), startY + (spacing * 2) + 22, (int)(w * fieldW), 30);
                 
-                phoneLabel.setBounds((int)(w * col), (int)(h * 0.400), (int)(w * fw), 18);
-                phoneField.setBounds((int)(w * col), (int)(h * 0.425), (int)(w * fw), 28);
+                phoneLabel.setBounds((int)(w * colX), startY + (spacing * 3), (int)(w * fieldW), 20);
+                phoneField.setBounds((int)(w * colX), startY + (spacing * 3) + 22, (int)(w * fieldW), 30);
+                
+                passLabel.setBounds((int)(w * colX), startY + (spacing * 4), (int)(w * fieldW), 20);
+                passField.setBounds((int)(w * colX), startY + (spacing * 4) + 22, (int)(w * fieldW), 30);
 
-                saveButton.setBounds((int)(w * col), (int)(h * 0.500), (int)(w * 0.14), 36);
-                backBtn.setBounds(20, (int)(h * 0.920), 80, 30);
+                saveButton.setBounds((int)(w * colX), startY + (spacing * 5), 180, 40);
             }
         });
 
