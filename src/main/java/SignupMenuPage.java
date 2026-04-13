@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -121,12 +122,33 @@ public class SignupMenuPage {
             email = emailField.getText().trim();
             password = new String(passwordField.getPassword()).trim();
             phoneNumber = phoneField.getText().trim();
+            
+            // Exception Handling
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || 
+                password.isEmpty() || phoneNumber.isEmpty()) {
+                JOptionPane.showMessageDialog(Main.window, "Please fill in all fields.", "Incomplete Form", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-            MemberDB.save(firstName, lastName, email, password, phoneNumber, membershipType, withTrainer);
-            BufferedImage qrImage = QrCodeGen.generateQR(email);
-            String safeFileName = firstName + "_" + lastName;
-            QrCodeGen.saveQRImage(qrImage, safeFileName);
-            QrSuccess.show(qrImage, firstName);
+            if (!phoneNumber.matches("\\d+")) {
+                JOptionPane.showMessageDialog(Main.window, "Phone number must contain numbers only.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (MemberDB.emailExists(email)) {
+                JOptionPane.showMessageDialog(Main.window, "Email is already registered.", "Registration Failed", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                MemberDB.save(firstName, lastName, email, password, phoneNumber, membershipType, withTrainer);
+                BufferedImage qrImage = QrCodeGen.generateQR(email);
+                String safeFileName = firstName + "_" + lastName;
+                QrCodeGen.saveQRImage(qrImage, safeFileName);
+                QrSuccess.show(qrImage, firstName);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(Main.window, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         panel.addComponentListener(new ComponentAdapter() {
