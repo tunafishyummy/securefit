@@ -104,11 +104,6 @@ public class InactiveMembersListPage {
         backBtn.addActionListener(e -> AdminMenuPage.show());
         panel.add(backBtn);
 
-        // --- Revoked Members label at bottom ---
-        JLabel revokedLabel = new JLabel("Revoked Members");
-        revokedLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        revokedLabel.setForeground(Color.WHITE);
-        panel.add(revokedLabel);
 
         // --- Responsive Layout ---
         panel.addComponentListener(new ComponentAdapter() {
@@ -125,7 +120,6 @@ public class InactiveMembersListPage {
                 int tableBottom = 65 + (h - 175);
                 totalProfitLabel.setBounds(w - 220, tableBottom + 5, 180, 20);
                 backBtn.setBounds(30, tableBottom + 20, 120, 45);
-                revokedLabel.setBounds(40, h - 25, 200, 20);
             }
         });
 
