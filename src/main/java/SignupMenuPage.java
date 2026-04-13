@@ -134,7 +134,11 @@ public class SignupMenuPage {
                 JOptionPane.showMessageDialog(Main.window, "Phone number must contain numbers only.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
+            if (phoneNumber.length() != 11) {
+                JOptionPane.showMessageDialog(Main.window, "Phone number must be exactly 11 digits.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+}
             if (MemberDB.emailExists(email)) {
                 JOptionPane.showMessageDialog(Main.window, "Email is already registered.", "Registration Failed", JOptionPane.ERROR_MESSAGE);
                 return;
