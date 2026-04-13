@@ -139,6 +139,10 @@ public class SignupMenuPage {
                 JOptionPane.showMessageDialog(Main.window, "Phone number must be exactly 11 digits.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
 }
+            if (!email.endsWith("@gmail.com")) {
+                JOptionPane.showMessageDialog(Main.window, "Email must be a valid Gmail address (@gmail.com).", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+}
             if (MemberDB.emailExists(email)) {
                 JOptionPane.showMessageDialog(Main.window, "Email is already registered.", "Registration Failed", JOptionPane.ERROR_MESSAGE);
                 return;
