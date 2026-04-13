@@ -34,7 +34,7 @@ public class AdminMenuPage {
         topBar.add(logoutBtn);
 
         // --- Main Content ---
-        JLabel menuLabel = new JLabel("Main Menu");
+        JLabel menuLabel = new JLabel("Admin Menu");
         menuLabel.setFont(new Font("Arial", Font.BOLD, 18));
         panel.add(menuLabel);
 
