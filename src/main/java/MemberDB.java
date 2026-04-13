@@ -81,7 +81,38 @@ public class MemberDB {
         System.err.println("Error saving member: " + ex.getMessage());
     }
 }
+public static String[] getMemberData(String email) {
+    String[] data = new String[4]; 
+    String sql = "SELECT first, last, email, phone FROM members WHERE email = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, email);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                data[0] = rs.getString("first");
+                data[1] = rs.getString("last");
+                data[2] = rs.getString("email");
+                data[3] = rs.getString("phone");
+            }
+        }
+    } catch (SQLException ex) {
+        System.err.println("Error fetching member data: " + ex.getMessage());
+    }
+    return data;
+}
 
+public static void updateMember(String oldEmail, String first, String last, String newEmail, String phone) {
+    String sql = "UPDATE members SET first = ?, last = ?, email = ?, phone = ? WHERE email = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, first);
+        ps.setString(2, last);
+        ps.setString(3, newEmail);
+        ps.setString(4, phone);
+        ps.setString(5, oldEmail);
+        ps.executeUpdate();
+    } catch (SQLException ex) {
+        System.err.println("Error updating member: " + ex.getMessage());
+    }
+}
     public static boolean checkCredentials(String email, String password) {
         String sql = "SELECT pass FROM members WHERE email=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
