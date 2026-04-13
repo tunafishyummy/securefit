@@ -116,11 +116,7 @@ public class RevokedMembershipListPage {
         Main.window.add(panel);
         Main.window.revalidate();
         Main.window.repaint();
-    public static Object show() {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'show'");
     }
-
     private static void loadRevokedMembers(DefaultTableModel model) {
         // TODO: Once you add a 'revoked' status and 'reason' column to your DB,
         // query with: SELECT * FROM members WHERE status = 'REVOKED'
