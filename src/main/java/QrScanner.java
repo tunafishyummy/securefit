@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
-
+import java.awt.Font;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.github.sarxos.webcam.Webcam;
@@ -12,6 +13,7 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+
 
 public class QrScanner {
     public static void startScanning() {
@@ -30,6 +32,14 @@ public class QrScanner {
         Main.window.getContentPane().removeAll();
         JPanel container = new JPanel(new BorderLayout());
         container.add(panel, BorderLayout.CENTER);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        backBtn.addActionListener(e -> {
+        webcam.close();
+        MainMenuPage.show();
+});
+container.add(backBtn, BorderLayout.SOUTH);
         
         Main.window.add(container);
         Main.window.revalidate();
