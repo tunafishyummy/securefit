@@ -1,5 +1,10 @@
 import java.awt.image.BufferedImage;
-import io.nayuki.qrcodegen.QrCode; 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import io.nayuki.qrcodegen.QrCode;
 
 public class QrCodeGen {
     public static BufferedImage generateQR(String text) {
@@ -12,5 +17,16 @@ public class QrCodeGen {
             }
         }
         return img;
+    }
+    
+    public static void saveQRImage(BufferedImage img, String fileName) {
+        try {
+            File folder = new File("qrcodes");
+            File outputFile = new File(folder, fileName + ".png");
+            ImageIO.write(img, "png", outputFile);
+            System.out.println("QR Code saved: " + outputFile.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Error saving QR image: " + e.getMessage());
+        }
     }
 }

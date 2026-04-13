@@ -23,6 +23,16 @@ public class SignupMenuPage {
     private static String membershipType = "MONTHLY";
     private static boolean withTrainer = false;
 
+    private static int getPrice(String type, boolean trainer) {
+        switch (type.toUpperCase()) {
+            case "ONE TIME SESSION": return trainer ? 300 : 150;
+            case "WEEKLY":          return trainer ? 1250 : 750;
+            case "MONTHLY":         return trainer ? 3000 : 1500;
+            case "YEARLY":          return trainer ? 15000 : 7500;
+            default:                return 0;
+        }
+    }
+
     public static void show() {
         Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
@@ -33,7 +43,7 @@ public class SignupMenuPage {
         panel.add(image1);
 
         JLabel title1 = new JLabel("GYM REGISTRATION");
-        title1.setFont(new Font("Prompt", Font.BOLD, 64));
+        title1.setFont(new Font("Prompt", Font.BOLD, 36)); // reduced from 64
         panel.add(title1);
 
         JLabel firstNameLabel = new JLabel("FIRST NAME");
@@ -69,16 +79,24 @@ public class SignupMenuPage {
 
         JCheckBox trainerCheckBox = new JCheckBox("WITH TRAINER");
         trainerCheckBox.setSelected(withTrainer);
+        trainerCheckBox.setBackground(Color.WHITE);
         panel.add(trainerCheckBox);
+
+        // --- Price Indicator ---
+        JLabel priceLabel = new JLabel("\u20B1" + getPrice(membershipType, withTrainer));
+        priceLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        priceLabel.setForeground(new Color(0x228B22));
+        panel.add(priceLabel);
 
         JButton registerButton = new JButton("Register");
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(Color.WHITE);
+        registerButton.setFont(new Font("Arial", Font.BOLD, 14));
         panel.add(registerButton);
-        
+
         // --- Back Button ---
         JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Arial", Font.BOLD, 18));
+        backBtn.setFont(new Font("Arial", Font.BOLD, 14));
         backBtn.setForeground(Color.BLACK);
         backBtn.setContentAreaFilled(false);
         backBtn.setBorderPainted(false);
@@ -87,8 +105,15 @@ public class SignupMenuPage {
         backBtn.addActionListener(e -> MainMenuPage.show());
         panel.add(backBtn);
 
-        membershipBox.addActionListener(e -> membershipType = (String) membershipBox.getSelectedItem());
-        trainerCheckBox.addActionListener(e -> withTrainer = trainerCheckBox.isSelected());
+        membershipBox.addActionListener(e -> {
+            membershipType = (String) membershipBox.getSelectedItem();
+            priceLabel.setText("\u20B1" + getPrice(membershipType, withTrainer));
+        });
+
+        trainerCheckBox.addActionListener(e -> {
+            withTrainer = trainerCheckBox.isSelected();
+            priceLabel.setText("\u20B1" + getPrice(membershipType, withTrainer));
+        });
 
         registerButton.addActionListener(e -> {
             firstName = firstNameField.getText().trim();
@@ -99,6 +124,8 @@ public class SignupMenuPage {
 
             MemberDB.save(firstName, lastName, email, password, phoneNumber, membershipType, withTrainer);
             BufferedImage qrImage = QrCodeGen.generateQR(email);
+            String safeFileName = firstName + "_" + lastName;
+            QrCodeGen.saveQRImage(qrImage, safeFileName);
             QrSuccess.show(qrImage, firstName);
         });
 
@@ -108,25 +135,41 @@ public class SignupMenuPage {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
 
+                double col = 0.35;   // left edge of form fields
+                double fw  = 0.30;   // field width
+
                 image1.setBounds(10, 10, 50, 50);
-                title1.setBounds((int) (w * 0.335), (int) (h * 0.146), (int) (w * 0.356), 56);
-                firstNameLabel.setBounds((int) (w * 0.417), (int) (h * 0.231), 100, 20);
-                firstNameField.setBounds((int) (w * 0.417), (int) (h * 0.250), (int) (w * 0.156), 30);
-                lastNameLabel.setBounds((int) (w * 0.417), (int) (h * 0.296), 100, 20);
-                lastNameField.setBounds((int) (w * 0.417), (int) (h * 0.315), (int) (w * 0.156), 30);
-                emailLabel.setBounds((int) (w * 0.417), (int) (h * 0.361), 120, 20);
-                emailField.setBounds((int) (w * 0.417), (int) (h * 0.380), (int) (w * 0.156), 30);
-                passwordLabel.setBounds((int) (w * 0.417), (int) (h * 0.426), 100, 20);
-                passwordField.setBounds((int) (w * 0.417), (int) (h * 0.444), (int) (w * 0.156), 30);
-                phoneLabel.setBounds((int) (w * 0.417), (int) (h * 0.491), 120, 20);
-                phoneField.setBounds((int) (w * 0.417), (int) (h * 0.509), (int) (w * 0.156), 30);
-                membershipLabel.setBounds((int) (w * 0.417), (int) (h * 0.556), 150, 20);
-                membershipBox.setBounds((int) (w * 0.417), (int) (h * 0.574), (int) (w * 0.078), 30);
-                trainerCheckBox.setBounds((int) (w * 0.505), (int) (h * 0.574), (int) (w * 0.100), 30);
-                registerButton.setBounds((int) (w * 0.417), (int) (h * 0.630), 150, 40);
-                backBtn.setBounds(20, (int) (h * 0.90), 100, 35);
+
+                // Title centered, smaller font
+                title1.setBounds((int)(w * 0.28), (int)(h * 0.06), (int)(w * 0.44), 45);
+
+                firstNameLabel.setBounds((int)(w * col), (int)(h * 0.160), (int)(w * fw), 18);
+                firstNameField.setBounds((int)(w * col), (int)(h * 0.185), (int)(w * fw), 28);
+
+                lastNameLabel.setBounds((int)(w * col), (int)(h * 0.240), (int)(w * fw), 18);
+                lastNameField.setBounds((int)(w * col), (int)(h * 0.265), (int)(w * fw), 28);
+
+                emailLabel.setBounds((int)(w * col), (int)(h * 0.320), (int)(w * fw), 18);
+                emailField.setBounds((int)(w * col), (int)(h * 0.345), (int)(w * fw), 28);
+
+                passwordLabel.setBounds((int)(w * col), (int)(h * 0.400), (int)(w * fw), 18);
+                passwordField.setBounds((int)(w * col), (int)(h * 0.425), (int)(w * fw), 28);
+
+                phoneLabel.setBounds((int)(w * col), (int)(h * 0.480), (int)(w * fw), 18);
+                phoneField.setBounds((int)(w * col), (int)(h * 0.505), (int)(w * fw), 28);
+
+                membershipLabel.setBounds((int)(w * col), (int)(h * 0.555), (int)(w * fw), 18);
+                membershipBox.setBounds((int)(w * col), (int)(h * 0.578), (int)(w * 0.14), 28);
+                trainerCheckBox.setBounds((int)(w * col + w * 0.15), (int)(h * 0.578), (int)(w * 0.14), 28);
+
+                priceLabel.setBounds((int)(w * col), (int)(h * 0.625), (int)(w * 0.20), 22);
+
+                registerButton.setBounds((int)(w * col), (int)(h * 0.665), (int)(w * 0.14), 36);
+
+                backBtn.setBounds(20, (int)(h * 0.920), 80, 30);
             }
         });
+
         Main.window.add(panel);
         Main.window.revalidate();
         Main.window.repaint();

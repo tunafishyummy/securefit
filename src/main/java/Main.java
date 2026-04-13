@@ -8,7 +8,7 @@ public class Main {
     public static JFrame window;
     public static void main(String[] args) {
         
-        SwingUtilities.invokeLater(() -> { //I heard this does really good shit for stability
+        SwingUtilities.invokeLater(() -> { //I heard this does really good stuff for stability
         window = new JFrame("Home");
         
         //Let's address the window's scope
