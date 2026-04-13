@@ -34,7 +34,8 @@ public class InactiveMembersListPage {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
-        loadInactiveMembers(model);
+        int[] totalProfit = {0};
+        loadInactiveMembers(model, totalProfit);
 
         JTable table = new JTable(model);
         table.setBackground(new Color(180, 180, 180));
@@ -54,13 +55,21 @@ public class InactiveMembersListPage {
         ((DefaultTableCellRenderer) header.getDefaultRenderer())
             .setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Alternating row colors + center align
+        // Alternating row colors + center align + multiline status support
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
                     JTable t, Object value, boolean isSelected,
                     boolean hasFocus, int row, int col) {
-                super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, col);
+                // Use HTML for multiline in status column
+                if (col == 5 && value != null) {
+                    String html = "<html><center>" +
+                        value.toString().replace("\n", "<br>") +
+                        "</center></html>";
+                    super.getTableCellRendererComponent(t, html, isSelected, hasFocus, row, col);
+                } else {
+                    super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, col);
+                }
                 setHorizontalAlignment(SwingConstants.CENTER);
                 if (isSelected) {
                     setBackground(new Color(120, 120, 200));
@@ -78,8 +87,8 @@ public class InactiveMembersListPage {
         panel.add(scrollPane);
 
         // --- Total Profit ---
-        JLabel totalProfitLabel = new JLabel("Total Profit:");
-        totalProfitLabel.setFont(new Font("Arial", Font.PLAIN, 13));
+        JLabel totalProfitLabel = new JLabel("Total Profit: ₱" + totalProfit[0]);
+        totalProfitLabel.setFont(new Font("Arial", Font.BOLD, 13));
         totalProfitLabel.setForeground(Color.WHITE);
         totalProfitLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(totalProfitLabel);
@@ -114,7 +123,7 @@ public class InactiveMembersListPage {
                 scrollPane.setBounds(20, 65, w - 40, h - 175);
 
                 int tableBottom = 65 + (h - 175);
-                totalProfitLabel.setBounds(w - 200, tableBottom + 5, 160, 20);
+                totalProfitLabel.setBounds(w - 220, tableBottom + 5, 180, 20);
                 backBtn.setBounds(30, tableBottom + 20, 120, 45);
                 revokedLabel.setBounds(40, h - 25, 200, 20);
             }
@@ -125,31 +134,52 @@ public class InactiveMembersListPage {
         Main.window.repaint();
     }
 
-    private static void loadInactiveMembers(DefaultTableModel model) {
-        // TODO: Once you add a 'status' column to your DB,
-        // query with: SELECT * FROM members WHERE status = 'INACTIVE'
-        // For now, loads all members as placeholder
-        String sql = "SELECT first, last, phone, email, type, trainer FROM members";
+    private static void loadInactiveMembers(DefaultTableModel model, int[] totalProfit) {
+        String sql = "SELECT first, last, phone, email, type, trainer, date_registered FROM members WHERE status = 'INACTIVE'";
         try {
-            java.lang.reflect.Field f = MemberDB.class.getDeclaredField("connection");
-            f.setAccessible(true);
-            Connection conn = (Connection) f.get(null);
-
+            Connection conn = MemberDB.getConnection();
             try (Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
-                    String name    = rs.getString("first") + " " + rs.getString("last");
-                    String phone   = rs.getString("phone");
-                    String email   = rs.getString("email");
-                    String type    = rs.getString("type");
-                    String trainer = rs.getBoolean("trainer") ? "YES" : "NO";
-                    String status  = "INACTIVE\nDue: -";  // placeholder
-                    String cost    = "-";                  // placeholder
-                    model.addRow(new Object[]{name, phone, email, type, trainer, status, cost});
+                    String name       = rs.getString("first") + " " + rs.getString("last");
+                    String phone      = rs.getString("phone");
+                    String email      = rs.getString("email");
+                    String type       = rs.getString("type");
+                    boolean trainer   = rs.getBoolean("trainer");
+                    String trainerStr = trainer ? "YES" : "NO";
+                    String dateReg    = rs.getString("date_registered");
+                    String expiredOn  = calculateExpiry(type, dateReg);
+                    String status     = "INACTIVE\nExpired on: " + expiredOn;
+                    int cost          = MemberDB.calculateCost(type, trainer);
+                    totalProfit[0]   += cost;
+                    model.addRow(new Object[]{
+                        name, phone, email, type, trainerStr,
+                        status, "₱" + cost
+                    });
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private static String calculateExpiry(String type, String dateRegistered) {
+        if (dateRegistered == null) return "-";
+        try {
+            java.time.LocalDateTime regDate = java.time.LocalDateTime.parse(
+                dateRegistered, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            );
+            java.time.LocalDateTime expiry;
+            switch (type.toUpperCase()) {
+                case "ONE TIME SESSION": expiry = regDate.plusDays(1);   break;
+                case "WEEKLY":          expiry = regDate.plusWeeks(1);   break;
+                case "MONTHLY":         expiry = regDate.plusMonths(1);  break;
+                case "YEARLY":          expiry = regDate.plusYears(1);   break;
+                default:                return "-";
+            }
+            return expiry.format(java.time.format.DateTimeFormatter.ofPattern("MMM dd, yyyy"));
+        } catch (Exception e) {
+            return "-";
         }
     }
 }

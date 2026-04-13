@@ -40,7 +40,6 @@ public class RevokedMembershipListPage {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
-        // Load revoked members from DB
         loadRevokedMembers(model);
 
         JTable table = new JTable(model);
@@ -117,27 +116,24 @@ public class RevokedMembershipListPage {
         Main.window.revalidate();
         Main.window.repaint();
     }
-    private static void loadRevokedMembers(DefaultTableModel model) {
-        // TODO: Once you add a 'revoked' status and 'reason' column to your DB,
-        // query with: SELECT * FROM members WHERE status = 'REVOKED'
-        // For now, loads all members as placeholder
-        String sql = "SELECT first, last, phone, email, type, trainer FROM members";
-        try {
-            java.lang.reflect.Field f = MemberDB.class.getDeclaredField("connection");
-            f.setAccessible(true);
-            Connection conn = (Connection) f.get(null);
 
+    private static void loadRevokedMembers(DefaultTableModel model) {
+        String sql = "SELECT first, last, phone, email, type, trainer, reason FROM members WHERE status = 'REVOKED'";
+        try {
+            Connection conn = MemberDB.getConnection();
             try (Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
-                    String name    = rs.getString("first") + " " + rs.getString("last");
-                    String phone   = rs.getString("phone");
-                    String email   = rs.getString("email");
-                    String type    = rs.getString("type");
-                    String trainer = rs.getBoolean("trainer") ? "YES" : "NO";
-                    String status  = "REVOKED";
-                    String reason  = "-"; // placeholder until reason column is added
-                    model.addRow(new Object[]{name, phone, email, type, trainer, status, reason});
+                    String name       = rs.getString("first") + " " + rs.getString("last");
+                    String phone      = rs.getString("phone");
+                    String email      = rs.getString("email");
+                    String type       = rs.getString("type");
+                    String trainerStr = rs.getBoolean("trainer") ? "YES" : "NO";
+                    String reason     = rs.getString("reason");
+                    model.addRow(new Object[]{
+                        name, phone, email, type, trainerStr,
+                        "REVOKED", reason
+                    });
                 }
             }
         } catch (Exception ex) {

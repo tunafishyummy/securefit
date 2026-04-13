@@ -1,24 +1,9 @@
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
+import javax.swing.*;
+import javax.swing.table.*;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import java.sql.*;
 
 public class ActiveMembersListPage {
     public static void show() {
@@ -37,15 +22,15 @@ public class ActiveMembersListPage {
         String[] columns = {
             "Name", "Mobile No.", "Email Address",
             "Type of Membership", "W/Trainer",
-            "Status of Membership", "Recent Entry", "Total Cost"
+            "Status of Membership", "Date Registered", "Total Cost"
         };
 
         DefaultTableModel model = new DefaultTableModel(columns, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
-        // Load members from DB
-        loadMembers(model);
+        int[] totalProfit = {0};
+        loadMembers(model, totalProfit);
 
         JTable table = new JTable(model);
         table.setBackground(new Color(180, 180, 180));
@@ -62,16 +47,10 @@ public class ActiveMembersListPage {
         header.setForeground(Color.WHITE);
         header.setFont(new Font("Arial", Font.BOLD, 13));
         header.setReorderingAllowed(false);
-        ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        ((DefaultTableCellRenderer) header.getDefaultRenderer())
+            .setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Center-align all cells
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        for (int i = 0; i < columns.length; i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-
-        // Alternating row colors
+        // Alternating row colors + center align
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
@@ -95,8 +74,8 @@ public class ActiveMembersListPage {
         panel.add(scrollPane);
 
         // --- Total Profit ---
-        JLabel totalProfitLabel = new JLabel("Total Profit:");
-        totalProfitLabel.setFont(new Font("Arial", Font.PLAIN, 13));
+        JLabel totalProfitLabel = new JLabel("Total Profit: ₱" + totalProfit[0]);
+        totalProfitLabel.setFont(new Font("Arial", Font.BOLD, 13));
         totalProfitLabel.setForeground(Color.WHITE);
         totalProfitLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(totalProfitLabel);
@@ -112,12 +91,6 @@ public class ActiveMembersListPage {
         backBtn.addActionListener(e -> AdminMenuPage.show());
         panel.add(backBtn);
 
-        // --- Inactive Members List (bottom label) ---
-        JLabel inactiveLabel = new JLabel("Inactive Members List");
-        inactiveLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        inactiveLabel.setForeground(Color.WHITE);
-        panel.add(inactiveLabel);
-
         // --- Responsive Layout ---
         panel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -129,9 +102,8 @@ public class ActiveMembersListPage {
                 scrollPane.setBounds(40, 50, w - 80, h - 175);
 
                 int tableBottom = 50 + (h - 175);
-                totalProfitLabel.setBounds(w - 200, tableBottom + 5, 160, 20);
+                totalProfitLabel.setBounds(w - 220, tableBottom + 5, 180, 20);
                 backBtn.setBounds(30, tableBottom + 30, 120, 40);
-                inactiveLabel.setBounds(40, h - 25, 250, 20);
             }
         });
 
@@ -140,29 +112,30 @@ public class ActiveMembersListPage {
         Main.window.repaint();
     }
 
-    private static void loadMembers(DefaultTableModel model) {
-        String sql = "SELECT first, last, phone, email, type, trainer FROM members";
-        try {
-            java.lang.reflect.Field f = MemberDB.class.getDeclaredField("connection");
-            f.setAccessible(true);
-            Connection conn = (Connection) f.get(null);
-
-            try (Statement stmt = conn.createStatement();
-                 ResultSet rs = stmt.executeQuery(sql)) {
-                while (rs.next()) {
-                    String name     = rs.getString("first") + " " + rs.getString("last");
-                    String phone    = rs.getString("phone");
-                    String email    = rs.getString("email");
-                    String type     = rs.getString("type");
-                    String trainer  = rs.getBoolean("trainer") ? "YES" : "NO";
-                    String status   = "ACTIVE";
-                    String entry    = "-";   // placeholder
-                    String cost     = "-";   // placeholder
-                    model.addRow(new Object[]{name, phone, email, type, trainer, status, entry, cost});
-                }
+    private static void loadMembers(DefaultTableModel model, int[] totalProfit) {
+    String sql = "SELECT first, last, phone, email, type, trainer, date_registered FROM members WHERE status = 'ACTIVE'";
+    try {
+        Connection conn = MemberDB.getConnection();
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String name       = rs.getString("first") + " " + rs.getString("last");
+                String phone      = rs.getString("phone");
+                String email      = rs.getString("email");
+                String type       = rs.getString("type");
+                boolean trainer   = rs.getBoolean("trainer");
+                String trainerStr = trainer ? "YES" : "NO";
+                String dateReg    = rs.getString("date_registered");
+                int cost          = MemberDB.calculateCost(type, trainer);
+                totalProfit[0]   += cost;
+                model.addRow(new Object[]{
+                    name, phone, email, type, trainerStr,
+                    "ACTIVE", dateReg, "₱" + cost
+                });
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+}
 }

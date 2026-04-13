@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.*;
 
 public class RevokedMembershipPage {
     public static void show() {
@@ -57,12 +58,39 @@ public class RevokedMembershipPage {
         revokeBtn.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         revokeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         revokeBtn.addActionListener(e -> {
-            String name = nameField.getText().trim();
+            String name   = nameField.getText().trim();
             String reason = reasonField.getText().trim();
-            // TODO: handle revoke logic (e.g. mark member as revoked in DB)
-            JOptionPane.showMessageDialog(panel,
-                "Membership revoked for: " + name + "\nReason: " + reason,
-                "Revoked", JOptionPane.INFORMATION_MESSAGE);
+
+            if (name.isEmpty() || name.equals("ENTER MEMBER NAME")) {
+                JOptionPane.showMessageDialog(panel, "Please enter a member name.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (reason.isEmpty() || reason.equals("ENTER REASON")) {
+                JOptionPane.showMessageDialog(panel, "Please enter a reason.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String sql = "UPDATE members SET status = 'REVOKED', reason = ? WHERE (first || ' ' || last) = ?";
+            try {
+                Connection conn = MemberDB.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, reason);
+                ps.setString(2, name);
+                int rows = ps.executeUpdate();
+                if (rows > 0) {
+                    JOptionPane.showMessageDialog(panel,
+                        "Membership revoked for: " + name + "\nReason: " + reason,
+                        "Revoked", JOptionPane.INFORMATION_MESSAGE);
+                    nameField.setText("ENTER MEMBER NAME");
+                    reasonField.setText("ENTER REASON");
+                } else {
+                    JOptionPane.showMessageDialog(panel,
+                        "Member not found: " + name,
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                System.err.println("Error revoking member: " + ex.getMessage());
+            }
         });
         panel.add(revokeBtn);
 
@@ -84,12 +112,10 @@ public class RevokedMembershipPage {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
 
-                // Top bar
                 topBar.setBounds(0, 0, w, 60);
                 logo.setBounds(10, 5, 50, 50);
                 title.setBounds(70, 15, 400, 30);
 
-                // Form center
                 int formX = (int) (w * 0.20);
                 int formW = (int) (w * 0.60);
 
@@ -100,7 +126,6 @@ public class RevokedMembershipPage {
                 reasonField.setBounds(formX, (int) (h * 0.47), formW, 50);
 
                 revokeBtn.setBounds(formX + (formW / 2) - 75, (int) (h * 0.65), 150, 45);
-
                 backBtn.setBounds(30, (int) (h * 0.88), 120, 40);
             }
         });
