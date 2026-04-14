@@ -41,7 +41,7 @@ public class InactiveMembersListPage {
         table.setBackground(new Color(180, 180, 180));
         table.setForeground(Color.BLACK);
         table.setFont(new Font("Arial", Font.PLAIN, 13));
-        table.setRowHeight(55);
+        table.setRowHeight(75);
         table.setGridColor(Color.WHITE);
         table.setShowGrid(true);
         table.setIntercellSpacing(new Dimension(1, 1));
@@ -129,6 +129,7 @@ public class InactiveMembersListPage {
     }
 
     private static void loadInactiveMembers(DefaultTableModel model, int[] totalProfit) {
+        MemberDB.updateExpiredMembers();
         String sql = "SELECT first, last, phone, email, type, trainer, date_registered FROM members WHERE status = 'INACTIVE'";
         try {
             Connection conn = MemberDB.getConnection();

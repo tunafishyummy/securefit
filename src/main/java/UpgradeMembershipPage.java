@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import java.awt.Cursor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -70,7 +70,18 @@ public class UpgradeMembershipPage {
             JOptionPane.showMessageDialog(Main.window, "Membership Successfully Upgraded!");
             LoggedInMainMenuPage.show();
         });
-
+        
+        // Back Button
+        JButton backBtn = new JButton("Back");
+        backBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        backBtn.setForeground(Color.BLACK);
+        backBtn.setContentAreaFilled(false);
+        backBtn.setBorderPainted(false);
+        backBtn.setFocusPainted(false);
+        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        backBtn.addActionListener(e -> LoggedInMainMenuPage.show());
+        panel.add(backBtn);
+        
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -88,6 +99,8 @@ public class UpgradeMembershipPage {
                 priceLabel.setBounds(startX, (int)(h * 0.40), 200, 30);
                 
                 upgradeBtn.setBounds(startX, (int)(h * 0.46), 250, 45);
+
+                backBtn.setBounds(20, (int)(h * 0.92), 80, 30);
             }
         });
 

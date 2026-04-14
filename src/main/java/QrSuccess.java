@@ -25,11 +25,15 @@ public class QrSuccess {
         // Continue Button
         JButton continueBtn = new JButton("Continue");
         continueBtn.setFont(new Font("Prompt", Font.PLAIN, 28));
-        continueBtn.setBounds(1050, 620, 200, 50);
+        continueBtn.setForeground(Color.BLACK);
         continueBtn.setContentAreaFilled(false);
         continueBtn.setBorderPainted(false);
+        continueBtn.setFocusPainted(false);
+        continueBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        continueBtn.setBounds(1050, 620, 200, 40);
         continueBtn.addActionListener(e -> HomePage.show());
         panel.add(continueBtn);
+
 
         Main.window.add(panel);
         Main.window.revalidate();

@@ -194,6 +194,45 @@ public static void upgradeMembership(String email, String newType, boolean newTr
         System.err.println("Error updating status: " + ex.getMessage());
     }
 }
+    public static void updateExpiredMembers() {
+    String sql = "SELECT email, type, date_registered FROM members WHERE status = 'ACTIVE'";
+    try {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while (rs.next()) {
+            String email = rs.getString("email");
+            String type = rs.getString("type");
+            String dateReg = rs.getString("date_registered");
+
+            if (dateReg == null) continue;
+
+            java.time.LocalDateTime regDate = java.time.LocalDateTime.parse(
+                dateReg, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            );
+
+            java.time.LocalDateTime expiry;
+            switch (type.toUpperCase()) {
+                case "ONE TIME SESSION": expiry = regDate.plusDays(1);  break;
+                case "WEEKLY":          expiry = regDate.plusWeeks(1);  break;
+                case "MONTHLY":         expiry = regDate.plusMonths(1); break;
+                case "YEARLY":          expiry = regDate.plusYears(1);  break;
+                default: continue;
+            }
+
+            if (java.time.LocalDateTime.now().isAfter(expiry)) {
+                PreparedStatement update = conn.prepareStatement(
+                    "UPDATE members SET status = 'INACTIVE' WHERE email = ?"
+                );
+                update.setString(1, email);
+                update.executeUpdate();
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+}
     public static Connection getConnection() { return connection; }
 
     private MemberDB() {}
