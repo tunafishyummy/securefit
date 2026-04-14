@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
 import javax.swing.JPanel;
 
 public class MainMenuPage {
@@ -45,7 +46,7 @@ public class MainMenuPage {
                 
                 image1.setBounds((int)(w * 0.005), (int)(h * 0.009), (int)(w * 0.03), (int)(h * 0.05));
                 image2.setBounds((int)(w * 0.56), (int)(h * 0.09), (int)(w * 0.40), (int)(h * 0.67));
-                image3.setBounds((int)(w * 0.0229), (int)(h * 0.28), (int)(w * 0.10), (int)(h * 0.07));
+                image3.setBounds((int)(w * 0.0229), (int)(h * 0.28), (int)(w * 0.14), (int)(h * 0.07));
                 image4.setBounds((int)(w * 0.0229), (int)(h * 0.38), (int)(w * 0.14), (int)(h * 0.07));
                 image5.setBounds((int)(w * 0.0229), (int)(h * 0.48), (int)(w * 0.14), (int)(h * 0.07));
                 image6.setBounds((int)(w * 0.0229), (int)(h * 0.59), (int)(w * 0.15), (int)(h * 0.07)); 
