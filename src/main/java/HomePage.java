@@ -1,28 +1,35 @@
-import javax.swing.*;
-import java.awt.*;    
+import javax.swing.*; //swing again. We use jpanel a lot
+import java.awt.*; //awt. layout and colors etc
 import java.awt.event.ComponentEvent; //This detects when the window is resized and is used by ComponentAdapter
 import java.awt.event.ComponentAdapter; //This is the "listener"
 
+//no third-party libraries
+
+//this is Homepage.java, the landing screen upon running the program
 
 public class HomePage {
     public static void show() {
-        Main.window.getContentPane().removeAll();
+        Main.window.getContentPane().removeAll(); //this is a recurring line
+                                                  //it clears the window of all elements
+                                                  //so new elements can be added
 
-        JPanel panel = new JPanel(null);
-        panel.setBackground(Color.WHITE);
+        JPanel panel = new JPanel(null); //a new panel with a null layout
+                                         //a null layout means components must be placed manually
+        panel.setBackground(Color.WHITE); //yeah
 
         //image stuff
-        ImagePanel image1 = new ImagePanel("images/MainMenu.png");
+        ImagePanel image1 = new ImagePanel("images/MainMenu.png"); //imagepanel!
         image1.setOnClick(() -> { 
-            if (!Auth.isLoggedIn()) {
-                MainMenuPage.show();
+            if (!Auth.isLoggedIn()) { 
+                MainMenuPage.show(); //if not logged in, show regular main menu
                 return;
             }
-            LoggedInMainMenuPage.show();
+            LoggedInMainMenuPage.show(); //if logged in, show logged in menu
+                                         //dependent on logic in Auth.java
         });
         panel.add(image1);
         
-        ImagePanel image2 = new ImagePanel("images/AdminMenu.png");
+        ImagePanel image2 = new ImagePanel("images/AdminMenu.png"); //imagepanel!
         image2.setOnClick(() -> AdminLoginPage.show());
         panel.add(image2);
         
