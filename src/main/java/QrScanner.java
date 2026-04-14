@@ -14,6 +14,14 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 
+//hello, this is the qr based log in screen
+//in QrScanner.java, we have one method, startScanning.
+//he is diligent and does four jobs:
+// 1. opens the default webcam and detects if it exists (immediately below)
+// 2. replaces the SWwing window with the back button and the webcam feed
+// 3. keeps grabbing frames from the webcam (like a webcam feed would)
+// 4. it tries to decode a qr code from each and every single frame
+// take a look 
 
 public class QrScanner {
     public static void startScanning() {
