@@ -30,19 +30,20 @@ public class HomePage {
         panel.add(image1);
         
         ImagePanel image2 = new ImagePanel("images/AdminMenu.png"); //imagepanel!
-        image2.setOnClick(() -> AdminLoginPage.show());
+        image2.setOnClick(() -> AdminLoginPage.show());                       //this has click logic
         panel.add(image2);
         
-        ImagePanel image3 = new ImagePanel("images/Exit.png");
+        ImagePanel image3 = new ImagePanel("images/Exit.png"); //this has click logic
         image3.setOnClick(() -> System.exit(0));
         panel.add(image3);
         
-        ImagePanel image4 = new ImagePanel("images/MainLogo.png");
+        ImagePanel image4 = new ImagePanel("images/MainLogo.png"); //these guys are visual
         panel.add(image4);
         
-        ImagePanel image5 = new ImagePanel("images/SmallLogo.png");
+        ImagePanel image5 = new ImagePanel("images/SmallLogo.png"); //visual
         panel.add(image5);
 
+        //resizer behavior
         panel.addComponentListener(new ComponentAdapter() { //all the logic for resizing. This all allows for a stretchy window AND elements, as opposed to stiff. Note buddy man component adapter
             @Override //ComponentAdapter holds empty stuff. Override says we are overriding that empty stuff with our own
             public void componentResized(ComponentEvent e) { //you can probably just copy most of this
