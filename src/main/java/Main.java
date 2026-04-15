@@ -36,7 +36,7 @@ public class Main {
        
         HomePage.show(); //it is passed to HomePage.java, where we see our first window built
        
-        window.setVisible(true); //shows the window on screen
+        window.setVisible(true); //shows the window 11 on screen
 
         });
         
