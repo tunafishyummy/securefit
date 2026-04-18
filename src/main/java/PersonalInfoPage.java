@@ -25,7 +25,7 @@ public class PersonalInfoPage {
         logo.setOnClick(() -> LoggedInMainMenuPage.show());
         panel.add(logo);
 
-        JLabel title = new JLabel("EDIT PERSONAL INFO");
+        JLabel title = new JLabel("PERSONAL INFO");
         title.setFont(new Font("Prompt", Font.BOLD, 36));
         panel.add(title);
 
@@ -40,12 +40,16 @@ public class PersonalInfoPage {
         JTextField phoneField = new JTextField(data[3]);
         JLabel passLabel = new JLabel("NEW PASSWORD (LEAVE BLANK TO KEEP)");
         JPasswordField passField = new JPasswordField();
+        JLabel expireLabel = new JLabel("MEMBERSHIP EXPIRY DATE");
+        String expiry = MemberDB.getExpiry(Auth.getCurrentUser());
+        JLabel expireDate = new JLabel(expiry != null ? "Expires: " + expiry : "");
 
         panel.add(firstLabel); panel.add(firstField);
         panel.add(lastLabel); panel.add(lastField);
         panel.add(emailLabel); panel.add(emailField);
         panel.add(phoneLabel); panel.add(phoneField);
         panel.add(passLabel); panel.add(passField);
+        panel.add(expireLabel); panel.add(expireDate);
 
         JButton saveButton = new JButton("Save Changes");
         saveButton.setBackground(Color.BLACK);
@@ -118,7 +122,10 @@ public class PersonalInfoPage {
                 passLabel.setBounds((int)(w * colX), startY + (spacing * 4), (int)(w * fieldW), 20);
                 passField.setBounds((int)(w * colX), startY + (spacing * 4) + 22, (int)(w * fieldW), 30);
 
-                saveButton.setBounds((int)(w * colX), startY + (spacing * 5), 180, 40);
+                expireLabel.setBounds((int)(w * colX), startY + (spacing * 5), (int)(w * fieldW), 20);
+                expireDate.setBounds((int)(w * colX), startY + (spacing * 5) + 22, (int)(w * fieldW), 30);
+
+                saveButton.setBounds((int)(w * colX), startY + (spacing * 6), 180, 40);
             }
         });
 
