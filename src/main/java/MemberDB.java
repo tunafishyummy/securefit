@@ -233,6 +233,25 @@ public static void upgradeMembership(String email, String newType, boolean newTr
         ex.printStackTrace();
     }
 }
+
+    public static String getExpiry(String email) {
+        String sql = "SELECT type, date_registered FROM members WHERE email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String type = rs.getString("type");
+                String dateReg = rs.getString("date_registered");
+                return calculateExpiry(type, dateReg);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static String calculateExpiry(String type, String dateRegistered) {
+        return loadInactiveMembers.calculateExpiry(type, dateRegistered);
+    }
     public static Connection getConnection() { return connection; }
 
     private MemberDB() {}
