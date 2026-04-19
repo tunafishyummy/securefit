@@ -8,64 +8,50 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
 
 public class AdminLoginPage {
     private static final String ADMIN_PASSWORD = "admin123";
 
     public static void show() {
-        Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.BLACK);
 
-        // --- Black Top Bar ---
+        //Black top bar
         JPanel topBar = new JPanel(null);
         topBar.setBackground(Color.BLACK);
         panel.add(topBar);
 
-        ImagePanel image1 = new ImagePanel("images/SmallLogo.png");
-        image1.setOnClick(() -> HomePage.show());
-        topBar.add(image1);
+        //loog
+        ImagePanel logo = new ImagePanel("images/SmallLogo.png");
+        logo.setOnClick(() -> HomePage.show());
+        topBar.add(logo);
 
-        // --- Form ---
-        JLabel titleLabel = new JLabel("Enter Admin Password");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        //
+        JLabel titleLabel = new JLabel("Admin Panel", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        titleLabel.setForeground(Color.WHITE);
         panel.add(titleLabel);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 16));
         passwordField.putClientProperty("JTextField.placeholderText", "ENTER ADMIN PASSWORD");
         panel.add(passwordField);
 
         JButton signInBtn = new JButton("SIGN IN");
-        signInBtn.setBackground(Color.WHITE);
-        signInBtn.setForeground(Color.DARK_GRAY);
+        signInBtn.setBackground(Color.BLACK);
+        signInBtn.setForeground(Color.WHITE);
         signInBtn.setFont(new Font("Arial", Font.BOLD, 14));
         signInBtn.setFocusPainted(false);
+        signInBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel.add(signInBtn);
-
-        // --- Back Button ---
-        JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        backBtn.setForeground(Color.BLACK);
-        backBtn.setContentAreaFilled(false);
-        backBtn.setBorderPainted(false);
-        backBtn.setFocusPainted(false);
-        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        backBtn.addActionListener(e -> HomePage.show());
-        panel.add(backBtn);
 
         signInBtn.addActionListener(e -> {
             String entered = new String(passwordField.getPassword()).trim();
-            try {
-                if (entered.isEmpty()) {
-                    throw new Exception("Please enter the admin password.");
-                }
-                if (!entered.equals(ADMIN_PASSWORD)) {
-                    throw new Exception("Incorrect password. Access denied.");
-                }
+            if (entered.equals(ADMIN_PASSWORD)) {
                 AdminMenuPage.show();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(Main.window, ex.getMessage(), "Login Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(Main.window, "Incorrect password.", "Access Denied", JOptionPane.ERROR_MESSAGE);
                 passwordField.setText("");
             }
         });
@@ -76,18 +62,16 @@ public class AdminLoginPage {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
 
-                topBar.setBounds(0, 0, w, 60);
-                image1.setBounds(10, 5, 50, 50);
+                topBar.setBounds(0, 0, w, 80);
+                logo.setBounds(10, 0, 200, 79); 
 
-                titleLabel.setBounds((int)(w * 0.22), (int)(h * 0.25), (int)(w * 0.30), 30);
-                passwordField.setBounds((int)(w * 0.22), (int)(h * 0.32), (int)(w * 0.55), 50);
-                signInBtn.setBounds((int)(w * 0.38), (int)(h * 0.65), (int)(w * 0.22), 50);
-                backBtn.setBounds(20, (int)(h * 0.92), 80, 30);
+                titleLabel.setBounds(0, (int)(h * 0.25), w, 40);
+                passwordField.setBounds((int)(w * 0.3), (int)(h * 0.35), (int)(w * 0.4), 45);
+                signInBtn.setBounds((int)(w * 0.4), (int)(h * 0.45), (int)(w * 0.2), 45);
+                
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

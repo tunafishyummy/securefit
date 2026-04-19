@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 public class PersonalInfoPage {
     public static void show() {
-        Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.WHITE);
 
@@ -129,8 +128,6 @@ public class PersonalInfoPage {
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

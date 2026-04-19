@@ -35,7 +35,6 @@ public class SignupMenuPage {
     }
 
     public static void show() {
-        Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.WHITE);
 
@@ -103,7 +102,7 @@ public class SignupMenuPage {
         backBtn.setBorderPainted(false);
         backBtn.setFocusPainted(false);
         backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        backBtn.addActionListener(e -> MainMenuPage.show());
+        backBtn.addActionListener(e -> HomePage.show());
         panel.add(backBtn);
 
         membershipBox.addActionListener(e -> {
@@ -199,8 +198,6 @@ public class SignupMenuPage {
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

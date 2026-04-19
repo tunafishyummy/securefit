@@ -14,7 +14,6 @@ import javax.swing.SwingConstants;
 
 public class QrImage {
     public static void show(String email) {
-        Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
 
@@ -43,8 +42,6 @@ public class QrImage {
         backBtn.addActionListener(e -> LoggedInMainMenuPage.show());
         panel.add(backBtn, BorderLayout.SOUTH);
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

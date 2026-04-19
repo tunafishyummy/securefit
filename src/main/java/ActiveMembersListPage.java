@@ -7,8 +7,6 @@ import java.sql.*;
 
 public class ActiveMembersListPage {
     public static void show() {
-        Main.window.getContentPane().removeAll();
-
         JPanel panel = new JPanel(null);
         panel.setBackground(new Color(30, 30, 30));
 
@@ -107,9 +105,7 @@ public class ActiveMembersListPage {
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 
     private static void loadMembers(DefaultTableModel model, int[] totalProfit) {

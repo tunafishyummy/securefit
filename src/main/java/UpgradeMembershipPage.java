@@ -15,7 +15,6 @@ public class UpgradeMembershipPage {
     private static boolean selectedTrainer;
 
     public static void show() {
-        Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.WHITE);
 
@@ -104,8 +103,6 @@ public class UpgradeMembershipPage {
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

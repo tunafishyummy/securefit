@@ -7,8 +7,6 @@ import java.awt.event.ComponentEvent;
 public class InactiveMembersListPage {
 
     public static void show() {
-        Main.window.getContentPane().removeAll();
-
         JPanel panel = new JPanel(null);
         panel.setBackground(new Color(30, 30, 30));
 
@@ -122,8 +120,6 @@ public class InactiveMembersListPage {
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

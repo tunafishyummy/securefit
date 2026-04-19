@@ -6,7 +6,6 @@ import java.sql.*;
 
 public class RevokedMembershipPage {
     public static void show() {
-        Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.WHITE);
 
@@ -134,8 +133,6 @@ public class RevokedMembershipPage {
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

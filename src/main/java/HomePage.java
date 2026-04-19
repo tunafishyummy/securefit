@@ -9,38 +9,55 @@ import java.awt.event.ComponentAdapter; //This is the "listener"
 
 public class HomePage {
     public static void show() {
-        Main.window.getContentPane().removeAll(); //this is a recurring line
-                                                  //it clears the window of all elements
-                                                  //so new elements can be added
-
         JPanel panel = new JPanel(null); //a new panel with a null layout
                                          //a null layout means components must be placed manually
-        panel.setBackground(Color.WHITE); //yeah
+
+        final int[] clickCount = {0};
+        final long[] lastClickTime = {0}; //for opening the admin menu with 5 clicks on the small logo 
+        panel.setBackground(Color.BLACK); //yeah
 
         //image stuff
-        ImagePanel image1 = new ImagePanel("images/MainMenu.png"); //imagepanel!
-        image1.setOnClick(() -> { 
+        ImagePanel image1 = new ImagePanel("images/ScanQRCode.png"); //imagepanel!
+        image1.setOnClick(() -> {
+        new Thread(() -> {
+        System.out.println("Scanner started...");
+        QrScanner.startScanning();
+        }).start();
+        });
+        panel.add(image1);
+        
+        ImagePanel image2 = new ImagePanel("images/Login.png"); //imagepanel!
+        image2.setOnClick(() -> { 
             if (!Auth.isLoggedIn()) { 
-                MainMenuPage.show(); //if not logged in, show regular main menu
+                LoginPage.show(); //if not logged in, show login page
                 return;
             }
             LoggedInMainMenuPage.show(); //if logged in, show logged in menu
                                          //dependent on logic in Auth.java
-        });
-        panel.add(image1);
-        
-        ImagePanel image2 = new ImagePanel("images/AdminMenu.png"); //imagepanel!
-        image2.setOnClick(() -> AdminLoginPage.show());                       //this has click logic
+        });                       //this has click logic
         panel.add(image2);
         
-        ImagePanel image3 = new ImagePanel("images/Exit.png"); //this has click logic
-        image3.setOnClick(() -> System.exit(0));
+        ImagePanel image3 = new ImagePanel("images/Register.png"); //this has click logic
+        image3.setOnClick(() -> SignupMenuPage.show());
         panel.add(image3);
         
-        ImagePanel image4 = new ImagePanel("images/MainLogo.png"); //these guys are visual
-        panel.add(image4);
-        
         ImagePanel image5 = new ImagePanel("images/SmallLogo.png"); //visual
+        image5.setOnClick(() -> {
+         long now = System.currentTimeMillis();
+
+        //reset if too slow between clicks
+        if (now - lastClickTime[0] > 2000) {
+        clickCount[0] = 0;
+          }
+
+        clickCount[0]++;
+        lastClickTime[0] = now;
+
+        if (clickCount[0] >= 5) {
+        clickCount[0] = 0; // reset after triggering
+        AdminLoginPage.show();
+    }
+});
         panel.add(image5);
 
         //resizer behavior
@@ -51,21 +68,16 @@ public class HomePage {
                 int h = panel.getHeight(); //and this
                 
                 // Stacked buttons on the right (approx 57% across the screen)
-                image1.setBounds((int)(w * 0.57), (int)(h * 0.21), (int)(w * 0.33), (int)(h * 0.09)); //.5 = 50% across the screen etc etc
-                image2.setBounds((int)(w * 0.57), (int)(h * 0.32), (int)(w * 0.33), (int)(h * 0.09)); // same for y value
-                image3.setBounds((int)(w * 0.57), (int)(h * 0.43), (int)(w * 0.33), (int)(h * 0.09)); // requires some trial and error
-                
-                // Big logo on the left
-                image4.setBounds(0, (int)(h * 0.09), (int)(w * 0.40), (int)(h * 0.67));
+                image1.setBounds((int)(w * 0.01), (int)(h * 0.12), (int)(w * 0.53), (int)(h * 0.86)); //.5 = 50% across the screen etc etc
+                image2.setBounds((int)(w * 0.54), (int)(h * 0.12), (int)(w * 0.45), (int)(h * 0.43)); // same for y value
+                image3.setBounds((int)(w * 0.54), (int)(h * 0.55), (int)(w * 0.45), (int)(h * 0.43)); // requires some trial and error
                 
                 // Small logo top left (fixed ITS FIXED NOTE ITS FIXED LIKE UNMOVING)
-                image5.setBounds(10, 10, 50, 50); 
+                image5.setBounds(10, 0, 200, 79); 
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
 
     }
 

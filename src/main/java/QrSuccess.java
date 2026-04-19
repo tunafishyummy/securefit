@@ -4,7 +4,6 @@ import javax.swing.*;
 
 public class QrSuccess {
     public static void show(BufferedImage qrCode, String userName) {
-        Main.window.getContentPane().removeAll();
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.WHITE);
 
@@ -35,8 +34,6 @@ public class QrSuccess {
         panel.add(continueBtn);
 
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 }

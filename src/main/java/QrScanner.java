@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -25,64 +27,71 @@ import com.google.zxing.common.HybridBinarizer;
 
 public class QrScanner {
     public static void startScanning() {
-        Webcam webcam = Webcam.getDefault();
-        if (webcam == null) {
-            System.out.println("No webcam detected");
-            return;
-        }
-
-        
-        WebcamPanel panel = new WebcamPanel(webcam);
-        panel.setFPSDisplayed(true);
-        panel.setMirrored(true);
-
-        
-        Main.window.getContentPane().removeAll();
-        JPanel container = new JPanel(new BorderLayout());
-        container.add(panel, BorderLayout.CENTER);
-
-        JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        backBtn.addActionListener(e -> {
-        webcam.close();
-        MainMenuPage.show();
-});
-container.add(backBtn, BorderLayout.SOUTH);
-        
-        Main.window.add(container);
-        Main.window.revalidate();
-        Main.window.repaint();
-
-        
-        new Thread(() -> {
-            while (true) {
-                if (!webcam.isOpen()) continue;
-                
-                BufferedImage image = webcam.getImage();
-                if (image == null) continue;
-
-                try {
-                    LuminanceSource source = new BufferedImageLuminanceSource(image);
-                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                    Result result = new MultiFormatReader().decode(bitmap);
-                    
-                    String scannedEmail = result.getText();
-                    
-                    // DATABASE LINK
-                    if (MemberDB.emailExists(scannedEmail)) {
-                        System.out.println("Access Granted: " + scannedEmail);
-                        Auth.login(scannedEmail);
-                        webcam.close(); 
-                        
-                        javax.swing.SwingUtilities.invokeLater(() -> {
-                            LoggedInMainMenuPage.show();
-                        });
-                        break;
-                    }
-                } catch (NotFoundException e) {
-                    // QR not found in this frame, loop continues
-                }
-            }
-        }).start();
+    Webcam webcam = Webcam.getDefault();
+    if (webcam == null) {
+        System.out.println("No webcam detected");
+        return;
     }
+
+    // webcam
+    WebcamPanel webPanel = new WebcamPanel(webcam);
+    webPanel.setFPSDisplayed(true);
+    webPanel.setMirrored(true);
+
+    // header with the logo
+    JPanel headerPanel = new JPanel(null);
+    headerPanel.setBackground(Color.BLACK);
+    headerPanel.setPreferredSize(new Dimension(Main.window.getWidth(), 80));
+    
+    ImagePanel logo = new ImagePanel("images/SmallLogo.png");
+    logo.setBounds(10, 0, 200, 79); 
+    logo.setOnClick(() -> HomePage.show());
+    headerPanel.add(logo);
+
+    // main container
+    JPanel mainContainer = new JPanel(new BorderLayout());
+    
+    // top header
+    mainContainer.add(headerPanel, BorderLayout.NORTH);
+
+    // webcam
+    mainContainer.add(webPanel, BorderLayout.CENTER);
+
+    // back
+    JButton backBtn = new JButton("Back");
+    backBtn.setFont(new Font("Arial", Font.BOLD, 14));
+    backBtn.addActionListener(e -> {
+        webcam.close();
+        HomePage.show();
+    });
+    mainContainer.add(backBtn, BorderLayout.SOUTH);
+    Main.setPage(mainContainer);
+
+    // scan
+    new Thread(() -> {
+        while (true) {
+            if (!webcam.isOpen()) continue;
+            BufferedImage image = webcam.getImage();
+            if (image == null) continue;
+            try {
+                LuminanceSource source = new BufferedImageLuminanceSource(image);
+                BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                Result result = new MultiFormatReader().decode(bitmap);
+                
+                String scannedEmail = result.getText();
+                if (MemberDB.emailExists(scannedEmail)) {
+                    System.out.println("Access Granted: " + scannedEmail);
+                    Auth.login(scannedEmail);
+                    webcam.close(); 
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+                        LoggedInMainMenuPage.show();
+                    });
+                    break;
+                }
+            } catch (NotFoundException e) {
+
+            }
+        }
+    }).start();
+}
 }

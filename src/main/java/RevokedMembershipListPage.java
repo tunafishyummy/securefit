@@ -8,8 +8,6 @@ import java.sql.*;
 public class RevokedMembershipListPage {
 
     public static void show() {
-        Main.window.getContentPane().removeAll();
-
         JPanel panel = new JPanel(null);
         panel.setBackground(new Color(30, 30, 30));
 
@@ -112,9 +110,7 @@ public class RevokedMembershipListPage {
             }
         });
 
-        Main.window.add(panel);
-        Main.window.revalidate();
-        Main.window.repaint();
+        Main.setPage(panel);
     }
 
     private static void loadRevokedMembers(DefaultTableModel model) {
