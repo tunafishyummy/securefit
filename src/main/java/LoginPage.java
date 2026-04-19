@@ -6,16 +6,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
 public class LoginPage {
     public static void show() {
         JPanel panel = new JPanel(null);
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.BLACK);
 
-        ImagePanel image1 = new ImagePanel("images/SmallLogo.png");
-        image1.setOnClick(() -> HomePage.show());
-        panel.add(image1);
+        JPanel topBar = new JPanel(null);
+        topBar.setBackground(Color.BLACK);
+        panel.add(topBar);
+
+        ImagePanel logo = new ImagePanel("images/SmallLogo.png");
+        logo.setOnClick(() -> HomePage.show());
+        topBar.add(logo);
+
+        JLabel titleLabel = new JLabel("Member Login", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        titleLabel.setForeground(Color.WHITE);
+        panel.add(titleLabel);
 
         ImagePanel image2 = new ImagePanel("images/ContinuewithQRCode.png");
         image2.setOnClick(() -> {
@@ -27,29 +37,31 @@ public class LoginPage {
         panel.add(image2);
 
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
+        emailLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        emailLabel.setForeground(Color.WHITE);
+        emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(emailLabel);
+
         JTextField emailField = new JTextField();
+        emailField.setFont(new Font("Arial", Font.PLAIN, 20));
         panel.add(emailField);
 
         JLabel passwordLabel = new JLabel("PASSWORD");
+        passwordLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        passwordLabel.setForeground(Color.WHITE);
+        passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(passwordLabel);
+
         JPasswordField passwordField = new JPasswordField();
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 20));
         panel.add(passwordField);
 
-        // --- Back Button ---
-        JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Arial", Font.BOLD, 18));
-        backBtn.setForeground(Color.BLACK);
-        backBtn.setContentAreaFilled(false);
-        backBtn.setBorderPainted(false);
-        backBtn.setFocusPainted(false);
-        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        backBtn.addActionListener(e -> HomePage.show());
-        panel.add(backBtn);
-
-        JButton signInButton = new JButton("Sign in");
+        JButton signInButton = new JButton("SIGN IN");
         signInButton.setBackground(Color.BLACK);
         signInButton.setForeground(Color.WHITE);
+        signInButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        signInButton.setFocusPainted(false);
+        signInButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel.add(signInButton);
         signInButton.addActionListener(e -> {
             String email = emailField.getText().trim();
@@ -75,19 +87,24 @@ public class LoginPage {
             public void componentResized(ComponentEvent e) {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
+                int formLeft = (int) (w * 0.58);
+                int formWidth = (int) (w * 0.34);
+                int formRight = formLeft + formWidth;
+                int buttonWidth = Math.max(180, (int) (formWidth * 0.55));
 
-                image1.setBounds(10, 10, 50, 50);
-                image2.setBounds((int) (w * 0.385), (int) (h * 0.159), (int) (w * 0.226), (int) (h * 0.065));
+                topBar.setBounds(0, 0, w, 80);
+                logo.setBounds(10, 0, 200, 79);
 
-                emailLabel.setBounds((int) (w * 0.422), (int) (h * 0.361), (int) (w * 0.10), 20);
-                emailField.setBounds((int) (w * 0.422), (int) (h * 0.380), (int) (w * 0.156), 30);
+                titleLabel.setBounds(formLeft, (int) (h * 0.22), formWidth, 50);
+                image2.setBounds((int)(w * 0.01), (int)(h * 0.12), (int)(w * 0.53), (int)(h * 0.86));
 
-                passwordLabel.setBounds((int) (w * 0.422), (int) (h * 0.426), (int) (w * 0.08), 20);
-                passwordField.setBounds((int) (w * 0.422), (int) (h * 0.444), (int) (w * 0.156), 30);
+                emailLabel.setBounds(formLeft, (int) (h * 0.42), formWidth, 30);
+                emailField.setBounds(formLeft, (int) (h * 0.47), formWidth, 40);
 
-                signInButton.setBounds((int) (w * 0.458), (int) (h * 0.630), 150, 40);
+                passwordLabel.setBounds(formLeft, (int) (h * 0.56), formWidth, 30);
+                passwordField.setBounds(formLeft, (int) (h * 0.61), formWidth, 40);
 
-                backBtn.setBounds(20, (int) (h * 0.90), 100, 35);
+                signInButton.setBounds(formRight - buttonWidth, (int) (h * 0.72), buttonWidth, 45);
             }
         });
     

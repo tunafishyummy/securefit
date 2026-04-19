@@ -16,7 +16,7 @@ public class CustomTitleBar extends JPanel {
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(0, 40));
 
-        JLabel title = new JLabel("SecureFit");
+        JLabel title = new JLabel("SecureFit - Gym Management System");
         title.setForeground(Color.WHITE);
         title.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 0));
 
