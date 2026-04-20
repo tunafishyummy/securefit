@@ -10,11 +10,18 @@ public class ActiveMembersListPage {
         JPanel panel = new JPanel(null);
         panel.setBackground(new Color(30, 30, 30));
 
-        // --- Title ---
-        JLabel title = new JLabel("Active Members List");
-        title.setFont(new Font("Arial", Font.PLAIN, 16));
+        JPanel topBar = new JPanel(null);
+        topBar.setBackground(Color.BLACK);
+        panel.add(topBar);
+
+        ImagePanel logo = new ImagePanel("images/SmallLogo.png");
+        logo.setOnClick(() -> HomePage.show());
+        topBar.add(logo);
+
+        JLabel title = new JLabel("Active Members List", SwingConstants.CENTER);
+        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
         title.setForeground(Color.WHITE);
-        panel.add(title);
+        topBar.add(title);
 
         // --- Table Setup ---
         String[] columns = {
@@ -96,10 +103,13 @@ public class ActiveMembersListPage {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
 
-                title.setBounds(40, 15, 300, 25);
-                scrollPane.setBounds(40, 50, w - 80, h - 175);
+                topBar.setBounds(0, 0, w, 80);
+                logo.setBounds(10, 0, 200, 79);
+                title.setBounds(0, 16, w, 40);
 
-                int tableBottom = 50 + (h - 175);
+                scrollPane.setBounds(40, 95, w - 80, h - 220);
+
+                int tableBottom = 95 + (h - 220);
                 totalProfitLabel.setBounds(w - 220, tableBottom + 5, 180, 20);
                 backBtn.setBounds(30, tableBottom + 30, 120, 40);
             }

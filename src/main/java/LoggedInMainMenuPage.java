@@ -1,65 +1,72 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class LoggedInMainMenuPage {
     public static void show() {
         JPanel panel = new JPanel(null);
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.BLACK);
 
-        ImagePanel image1 = new ImagePanel("images/SmallLogo.png");
-        image1.setOnClick(() -> HomePage.show());
-        panel.add(image1);
+        JPanel topBar = new JPanel(null);
+        topBar.setBackground(Color.BLACK);
+        panel.add(topBar);
 
-        ImagePanel image2 = new ImagePanel("images/MainLogo.png");
-        panel.add(image2);
+        ImagePanel logo = new ImagePanel("images/SmallLogo.png");
+        logo.setOnClick(() -> HomePage.show());
+        topBar.add(logo);
 
-        ImagePanel image3 = new ImagePanel("images/Home.png");
-        image3.setOnClick(() -> HomePage.show());
-        panel.add(image3);
-
-        ImagePanel image4 = new ImagePanel("images/PersonalInfo.png");
-        image4.setOnClick(() -> PersonalInfoPage.show());
-        panel.add(image4);
-
-        ImagePanel image5 = new ImagePanel("images/QRCodeImage.png");
-        image5.setOnClick(() -> {
-        String email = Auth.getCurrentUser();
-        if (email != null) {
-        QrImage.show(email);
-        }
-        });
-        panel.add(image5);
-
-        ImagePanel image6 = new ImagePanel("images/UpgradeMembership.png");
-        image6.setOnClick(() -> UpgradeMembershipPage.show());
-        panel.add(image6);
-
-        JButton logOutButton = new JButton("Log out");
-        logOutButton.setBackground(Color.BLACK);
-        logOutButton.setForeground(Color.WHITE);
-        panel.add(logOutButton);
-        logOutButton.addActionListener(e -> {
+        ImagePanel logoutButton = new ImagePanel("images/Logout.png");
+        logoutButton.setOnClick(() -> {
             Auth.logout();
             HomePage.show();
         });
+
+        JLabel menuLabel = new JLabel("Main Menu", JLabel.CENTER);
+        menuLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        menuLabel.setForeground(Color.WHITE);
+        topBar.add(menuLabel);
+
+        ImagePanel personalInfoButton = new ImagePanel("images/PersonalInfo.png");
+        personalInfoButton.setOnClick(() -> PersonalInfoPage.show());
+        panel.add(personalInfoButton);
+
+        ImagePanel qrCodeButton = new ImagePanel("images/QRCodeImage.png");
+        qrCodeButton.setOnClick(() -> {
+            String email = Auth.getCurrentUser();
+            if (email != null) {
+                QrImage.show(email);
+            }
+        });
+        panel.add(qrCodeButton);
+
+        ImagePanel upgradeButton = new ImagePanel("images/UpgradeMembership.png");
+        upgradeButton.setOnClick(() -> UpgradeMembershipPage.show());
+        panel.add(upgradeButton);
+
+        panel.add(logoutButton);
 
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
+                int contentY = 80;
+                int contentHeight = Math.max(0, h - contentY);
+                int halfWidth = w / 2;
+                int halfHeight = contentHeight / 2;
 
-                image1.setBounds((int)(w * 0.005), (int)(h * 0.009), (int)(w * 0.03), (int)(h * 0.05)); 
-                image2.setBounds((int)(w * 0.56), (int)(h * 0.09), (int)(w * 0.40), (int)(h * 0.67));
-                image3.setBounds((int)(w * 0.0229), (int)(h * 0.28), (int)(w * 0.10), (int)(h * 0.07));
-                image4.setBounds((int)(w * 0.0229), (int)(h * 0.38), (int)(w * 0.15), (int)(h * 0.07));
-                image5.setBounds((int)(w * 0.0229), (int)(h * 0.48), (int)(w * 0.17), (int)(h * 0.07));
-                image6.setBounds((int)(w * 0.0229), (int)(h * 0.59), (int)(w * 0.19), (int)(h * 0.07));
-                logOutButton.setBounds((int) (w * 0.922), 10, 120, 40);
+                topBar.setBounds(0, 0, w, 80);
+                logo.setBounds(10, 0, 200, 79);
+                menuLabel.setBounds(0, 16, w, 40);
+
+                personalInfoButton.setBounds(0, contentY, halfWidth, halfHeight);
+                qrCodeButton.setBounds(0, contentY + halfHeight, halfWidth, contentHeight - halfHeight);
+                upgradeButton.setBounds(halfWidth, contentY, w - halfWidth, halfHeight);
+                logoutButton.setBounds(halfWidth, contentY + halfHeight, w - halfWidth, contentHeight - halfHeight);
             }
         });
 

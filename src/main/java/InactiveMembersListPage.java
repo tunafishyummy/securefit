@@ -15,10 +15,14 @@ public class InactiveMembersListPage {
         topBar.setBackground(Color.BLACK);
         panel.add(topBar);
 
-        // Logo
         ImagePanel logo = new ImagePanel("images/SmallLogo.png");
         logo.setOnClick(() -> HomePage.show());
         topBar.add(logo);
+
+        JLabel title = new JLabel("Inactive Members List", SwingConstants.CENTER);
+        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title.setForeground(Color.WHITE);
+        topBar.add(title);
 
         // --- Table Setup ---
         String[] columns = {
@@ -109,12 +113,13 @@ public class InactiveMembersListPage {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
 
-                topBar.setBounds(0, 0, w, 60);
-                logo.setBounds(10, 5, 50, 50);
+                topBar.setBounds(0, 0, w, 80);
+                logo.setBounds(10, 0, 200, 79);
+                title.setBounds(0, 16, w, 40);
 
-                scrollPane.setBounds(20, 65, w - 40, h - 175);
+                scrollPane.setBounds(20, 95, w - 40, h - 205);
 
-                int tableBottom = 65 + (h - 175);
+                int tableBottom = 95 + (h - 205);
                 totalProfitLabel.setBounds(w - 220, tableBottom + 5, 180, 20);
                 backBtn.setBounds(30, tableBottom + 20, 120, 45);
             }

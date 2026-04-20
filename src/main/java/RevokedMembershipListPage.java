@@ -16,14 +16,12 @@ public class RevokedMembershipListPage {
         topBar.setBackground(Color.BLACK);
         panel.add(topBar);
 
-        // Logo
         ImagePanel logo = new ImagePanel("images/SmallLogo.png");
         logo.setOnClick(() -> HomePage.show());
         topBar.add(logo);
 
-        // Title in top bar
-        JLabel title = new JLabel("Revoked Members");
-        title.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel title = new JLabel("Revoked Members", SwingConstants.CENTER);
+        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
@@ -99,13 +97,13 @@ public class RevokedMembershipListPage {
                 int w = panel.getWidth();
                 int h = panel.getHeight();
 
-                topBar.setBounds(0, 0, w, 60);
-                logo.setBounds(10, 5, 50, 50);
-                title.setBounds(70, 15, 300, 30);
+                topBar.setBounds(0, 0, w, 80);
+                logo.setBounds(10, 0, 200, 79);
+                title.setBounds(0, 16, w, 40);
 
-                scrollPane.setBounds(20, 65, w - 40, h - 160);
+                scrollPane.setBounds(20, 95, w - 40, h - 190);
 
-                int tableBottom = 65 + (h - 160);
+                int tableBottom = 95 + (h - 190);
                 backBtn.setBounds(30, tableBottom + 20, 120, 45);
             }
         });

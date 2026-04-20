@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension; //awt allows for stuff like colors, dimensions, layouts
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities; //swingy swing
@@ -23,6 +24,8 @@ public class Main {
                                            //it helps with Swing UI stability
         window = new JFrame("SecureFit"); //this is the aforementioned first window, made with swing, named Home
                                      //swing is the java gui toolkit youve heard of
+        ImageIcon icon = new ImageIcon("images/Icon.png"); //securefit iconies
+        Main.window.setIconImage(icon.getImage());
         
         //Let's address the window's scope
         window.setSize(1280,720); //this is the INITIAL, DEFAULT size

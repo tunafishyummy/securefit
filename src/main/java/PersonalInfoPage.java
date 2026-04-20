@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -10,51 +11,104 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
 public class PersonalInfoPage {
     public static void show() {
         JPanel panel = new JPanel(null);
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.BLACK);
 
         String currentEmail = Auth.getCurrentUser();
         String[] data = MemberDB.getMemberData(currentEmail);
 
-        ImagePanel logo = new ImagePanel("images/SmallLogo.png");
-        logo.setOnClick(() -> LoggedInMainMenuPage.show());
-        panel.add(logo);
+        JPanel topBar = new JPanel(null);
+        topBar.setBackground(Color.BLACK);
+        panel.add(topBar);
 
-        JLabel title = new JLabel("PERSONAL INFO");
-        title.setFont(new Font("Prompt", Font.BOLD, 36));
+        ImagePanel logo = new ImagePanel("images/SmallLogo.png");
+        logo.setOnClick(() -> HomePage.show());
+        topBar.add(logo);
+
+        JLabel title = new JLabel("Personal Info", SwingConstants.CENTER);
+        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title.setForeground(Color.WHITE);
         panel.add(title);
 
-        // Labels & Fields
         JLabel firstLabel = new JLabel("FIRST NAME");
+        firstLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        firstLabel.setForeground(Color.WHITE);
+        firstLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField firstField = new JTextField(data[0]);
+        firstField.setFont(new Font("Arial", Font.PLAIN, 20));
+
         JLabel lastLabel = new JLabel("LAST NAME");
+        lastLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        lastLabel.setForeground(Color.WHITE);
+        lastLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField lastField = new JTextField(data[1]);
+        lastField.setFont(new Font("Arial", Font.PLAIN, 20));
+
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
+        emailLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        emailLabel.setForeground(Color.WHITE);
+        emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField emailField = new JTextField(data[2]);
+        emailField.setFont(new Font("Arial", Font.PLAIN, 20));
+
         JLabel phoneLabel = new JLabel("PHONE NUMBER");
+        phoneLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        phoneLabel.setForeground(Color.WHITE);
+        phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField phoneField = new JTextField(data[3]);
+        phoneField.setFont(new Font("Arial", Font.PLAIN, 20));
+
         JLabel passLabel = new JLabel("NEW PASSWORD (LEAVE BLANK TO KEEP)");
+        passLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        passLabel.setForeground(Color.WHITE);
+        passLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JPasswordField passField = new JPasswordField();
+        passField.setFont(new Font("Arial", Font.PLAIN, 20));
+
         JLabel expireLabel = new JLabel("MEMBERSHIP EXPIRY DATE");
+        expireLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        expireLabel.setForeground(Color.WHITE);
+        expireLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         String expiry = MemberDB.getExpiry(Auth.getCurrentUser());
         JLabel expireDate = new JLabel(expiry != null ? "Expires: " + expiry : "");
+        expireDate.setFont(new Font("Arial", Font.PLAIN, 20));
+        expireDate.setForeground(Color.WHITE);
 
-        panel.add(firstLabel); panel.add(firstField);
-        panel.add(lastLabel); panel.add(lastField);
-        panel.add(emailLabel); panel.add(emailField);
-        panel.add(phoneLabel); panel.add(phoneField);
-        panel.add(passLabel); panel.add(passField);
-        panel.add(expireLabel); panel.add(expireDate);
+        panel.add(firstLabel);
+        panel.add(firstField);
+        panel.add(lastLabel);
+        panel.add(lastField);
+        panel.add(emailLabel);
+        panel.add(emailField);
+        panel.add(phoneLabel);
+        panel.add(phoneField);
+        panel.add(passLabel);
+        panel.add(passField);
+        panel.add(expireLabel);
+        panel.add(expireDate);
 
-        JButton saveButton = new JButton("Save Changes");
+        JButton saveButton = new JButton("SAVE CHANGES");
         saveButton.setBackground(Color.BLACK);
         saveButton.setForeground(Color.WHITE);
-        saveButton.setFont(new Font("Arial", Font.BOLD, 14));
+        saveButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        saveButton.setFocusPainted(false);
+        saveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel.add(saveButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        backButton.setForeground(Color.WHITE);
+        backButton.setContentAreaFilled(false);
+        backButton.setBorderPainted(false);
+        backButton.setFocusPainted(false);
+        backButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        backButton.addActionListener(e -> LoggedInMainMenuPage.show());
+        panel.add(backButton);
 
         saveButton.addActionListener(e -> {
             String nFirst = firstField.getText().trim();
@@ -73,21 +127,16 @@ public class PersonalInfoPage {
 
             if (success) {
                 if (isEmailChanged) {
-                    // 1. Force directory check
                     File dir = new File("qrcodes");
-                    if (!dir.exists()) dir.mkdirs();
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
 
-                    // 2. Generate and Save
                     BufferedImage newQr = QrCodeGen.generateQR(nEmail);
                     QrCodeGen.saveQRImage(newQr, nEmail);
-                    
-                    // 3. Update Session
                     Auth.login(nEmail);
-                    
-                    // 4. GO STRAIGHT TO QR IMAGE (No JOptionPane)
-                    QrImage.show(nEmail); 
+                    QrImage.show(nEmail);
                 } else {
-                    // Normal update: show success and go to Menu
                     JOptionPane.showMessageDialog(Main.window, "Profile updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     LoggedInMainMenuPage.show();
                 }
@@ -99,32 +148,41 @@ public class PersonalInfoPage {
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                int w = panel.getWidth(), h = panel.getHeight();
-                double colX = 0.35, fieldW = 0.30;
-                int startY = (int)(h * 0.15), spacing = 65;
+                int w = panel.getWidth();
+                int h = panel.getHeight();
+                int formLeft = (int) (w * 0.33);
+                int formWidth = (int) (w * 0.34);
+                int formRight = formLeft + formWidth;
+                int rowHeight = 38;
+                int labelHeight = 28;
+                int gapY = (int) (h * 0.10);
+                int startY = (int) (h * 0.19);
 
-                logo.setBounds(10, 10, 50, 50);
-                title.setBounds((int)(w * 0.28), (int)(h * 0.05), (int)(w * 0.5), 45);
-                
-                firstLabel.setBounds((int)(w * colX), startY, (int)(w * fieldW), 20);
-                firstField.setBounds((int)(w * colX), startY + 22, (int)(w * fieldW), 30);
-                
-                lastLabel.setBounds((int)(w * colX), startY + spacing, (int)(w * fieldW), 20);
-                lastField.setBounds((int)(w * colX), startY + spacing + 22, (int)(w * fieldW), 30);
-                
-                emailLabel.setBounds((int)(w * colX), startY + (spacing * 2), (int)(w * fieldW), 20);
-                emailField.setBounds((int)(w * colX), startY + (spacing * 2) + 22, (int)(w * fieldW), 30);
-                
-                phoneLabel.setBounds((int)(w * colX), startY + (spacing * 3), (int)(w * fieldW), 20);
-                phoneField.setBounds((int)(w * colX), startY + (spacing * 3) + 22, (int)(w * fieldW), 30);
-                
-                passLabel.setBounds((int)(w * colX), startY + (spacing * 4), (int)(w * fieldW), 20);
-                passField.setBounds((int)(w * colX), startY + (spacing * 4) + 22, (int)(w * fieldW), 30);
+                topBar.setBounds(0, 0, w, 80);
+                logo.setBounds(10, 0, 200, 79);
 
-                expireLabel.setBounds((int)(w * colX), startY + (spacing * 5), (int)(w * fieldW), 20);
-                expireDate.setBounds((int)(w * colX), startY + (spacing * 5) + 22, (int)(w * fieldW), 30);
+                title.setBounds(formLeft, (int) (h * 0.10), formWidth, 50);
 
-                saveButton.setBounds((int)(w * colX), startY + (spacing * 6), 180, 40);
+                firstLabel.setBounds(formLeft, startY, formWidth, labelHeight);
+                firstField.setBounds(formLeft, startY + 28, formWidth, rowHeight);
+
+                lastLabel.setBounds(formLeft, startY + gapY, formWidth, labelHeight);
+                lastField.setBounds(formLeft, startY + gapY + 28, formWidth, rowHeight);
+
+                emailLabel.setBounds(formLeft, startY + (gapY * 2), formWidth, labelHeight);
+                emailField.setBounds(formLeft, startY + (gapY * 2) + 28, formWidth, rowHeight);
+
+                phoneLabel.setBounds(formLeft, startY + (gapY * 3), formWidth, labelHeight);
+                phoneField.setBounds(formLeft, startY + (gapY * 3) + 28, formWidth, rowHeight);
+
+                passLabel.setBounds(formLeft, startY + (gapY * 4), formWidth, labelHeight);
+                passField.setBounds(formLeft, startY + (gapY * 4) + 28, formWidth, rowHeight);
+
+                expireLabel.setBounds(formLeft, startY + (gapY * 5), formWidth, labelHeight);
+                expireDate.setBounds(formLeft, startY + (gapY * 5) + 28, formWidth, rowHeight);
+
+                saveButton.setBounds(formRight - Math.max(180, (int) (formWidth * 0.42)), startY + (gapY * 6) + 20, Math.max(180, (int) (formWidth * 0.42)), 45);
+                backButton.setBounds((int) (w * 0.05), (int) (h * 0.88), 120, 40);
             }
         });
 
