@@ -124,7 +124,7 @@ public static boolean updateMember(String oldEmail, String first, String last, S
         }
 
         int rowsAffected = ps.executeUpdate();
-        System.out.println("Rows updated: " + rowsAffected); // DEBUG: Should be 1
+        System.out.println("Rows updated: " + rowsAffected);
         return rowsAffected > 0;
     } catch (SQLException ex) {
         System.err.println("SQL Update Error: " + ex.getMessage());
@@ -132,7 +132,8 @@ public static boolean updateMember(String oldEmail, String first, String last, S
     }
 }
 public static String[] getMembershipStatus(String email) {
-    String[] status = new String[2]; // status[0] = type, status[1] = trainer boolean
+    //status[0] holds the type and status[1] holds the trainer flag
+    String[] status = new String[2];
     String sql = "SELECT type, trainer FROM members WHERE email = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setString(1, email);
@@ -183,7 +184,7 @@ public static void upgradeMembership(String email, String newType, boolean newTr
         }
     }
 
-    //Status updates for membership management
+    //this helper keeps manual status updates in one place
     public static void setStatus(String email, String status) {
     String sql = "UPDATE members SET status = ? WHERE email = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {

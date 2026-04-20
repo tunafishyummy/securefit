@@ -17,17 +17,17 @@ public class AdminLoginPage {
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.BLACK);
 
-        //Black top bar
+        //this top bar keeps the shared header look in place
         JPanel topBar = new JPanel(null);
         topBar.setBackground(Color.BLACK);
         panel.add(topBar);
 
-        //loog
+        //small logo still works as the quick trip back home
         ImagePanel logo = new ImagePanel("images/SmallLogo.png");
         logo.setOnClick(() -> HomePage.show());
         topBar.add(logo);
 
-        //
+        //the rest of the page is just a compact password check
         JLabel titleLabel = new JLabel("Admin Panel", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
         titleLabel.setForeground(Color.WHITE);

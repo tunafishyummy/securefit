@@ -10,7 +10,7 @@ public class InactiveMembersListPage {
         JPanel panel = new JPanel(null);
         panel.setBackground(new Color(30, 30, 30));
 
-        // --- Black Top Bar ---
+        //same shared header so this page matches the other admin views
         JPanel topBar = new JPanel(null);
         topBar.setBackground(Color.BLACK);
         panel.add(topBar);
@@ -24,7 +24,7 @@ public class InactiveMembersListPage {
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
-        // --- Table Setup ---
+        //the table is the main point of the page, so it gets set up first
         String[] columns = {
             "Name", "Mobile No.", "Email Address",
             "Type of Membership", "W/Trainer",
@@ -47,7 +47,7 @@ public class InactiveMembersListPage {
         table.setShowGrid(true);
         table.setIntercellSpacing(new Dimension(1, 1));
 
-        // Header styling
+        //high contrast helps a lot once the columns start filling up
         JTableHeader header = table.getTableHeader();
         header.setBackground(Color.BLACK);
         header.setForeground(Color.WHITE);
@@ -56,13 +56,13 @@ public class InactiveMembersListPage {
         ((DefaultTableCellRenderer) header.getDefaultRenderer())
             .setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Alternating row colors + center align + multiline status support
+        //this renderer handles striping, centering, and the multiline status cell
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
                     JTable t, Object value, boolean isSelected,
                     boolean hasFocus, int row, int col) {
-                // Use HTML for multiline in status column
+                //swing table cells play nicely with a little html for line breaks
                 if (col == 5 && value != null) {
                     String html = "<html><center>" +
                         value.toString().replace("\n", "<br>") +
@@ -87,14 +87,14 @@ public class InactiveMembersListPage {
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         panel.add(scrollPane);
 
-        // --- Total Profit ---
+        //this keeps the total visible near the bottom of the table
         JLabel totalProfitLabel = new JLabel("Total Profit: ₱" + totalProfit[0]);
         totalProfitLabel.setFont(new Font("Arial", Font.BOLD, 13));
         totalProfitLabel.setForeground(Color.WHITE);
         totalProfitLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(totalProfitLabel);
 
-        // --- Back Button ---
+        //back returns to the admin menu
         JButton backBtn = new JButton("Back");
         backBtn.setFont(new Font("Arial", Font.BOLD, 28));
         backBtn.setForeground(Color.WHITE);
@@ -106,7 +106,7 @@ public class InactiveMembersListPage {
         panel.add(backBtn);
 
 
-        // --- Responsive Layout ---
+        //the layout mostly just protects table space during resize
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {

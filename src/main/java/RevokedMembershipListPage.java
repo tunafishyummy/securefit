@@ -11,7 +11,7 @@ public class RevokedMembershipListPage {
         JPanel panel = new JPanel(null);
         panel.setBackground(new Color(30, 30, 30));
 
-        // --- Black Top Bar ---
+        //same shared header so this list feels like the rest of the admin pages
         JPanel topBar = new JPanel(null);
         topBar.setBackground(Color.BLACK);
         panel.add(topBar);
@@ -25,7 +25,7 @@ public class RevokedMembershipListPage {
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
-        // --- Table Setup ---
+        //the table is the page, so it gets built right away
         String[] columns = {
             "Name", "Mobile No.", "Email Address",
             "Type of Membership", "W/Trainer",
@@ -47,7 +47,7 @@ public class RevokedMembershipListPage {
         table.setShowGrid(true);
         table.setIntercellSpacing(new Dimension(1, 1));
 
-        // Header styling
+        //the header needs strong contrast because this list gets dense
         JTableHeader header = table.getTableHeader();
         header.setBackground(Color.BLACK);
         header.setForeground(Color.WHITE);
@@ -56,7 +56,7 @@ public class RevokedMembershipListPage {
         ((DefaultTableCellRenderer) header.getDefaultRenderer())
             .setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Alternating row colors + center align
+        //this renderer handles striping and keeps text centered
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
@@ -79,7 +79,7 @@ public class RevokedMembershipListPage {
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         panel.add(scrollPane);
 
-        // --- Back Button ---
+        //back takes us to the admin menu
         JButton backBtn = new JButton("Back");
         backBtn.setFont(new Font("Arial", Font.BOLD, 28));
         backBtn.setForeground(Color.WHITE);
@@ -90,7 +90,7 @@ public class RevokedMembershipListPage {
         backBtn.addActionListener(e -> AdminMenuPage.show());
         panel.add(backBtn);
 
-        // --- Responsive Layout ---
+        //resizing is mostly about leaving the table as much space as possible
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {

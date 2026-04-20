@@ -16,14 +16,7 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 
-//hello, this is the qr based log in screen
-//in QrScanner.java, we have one method, startScanning.
-//he is diligent and does four jobs:
-// 1. opens the default webcam and detects if it exists (immediately below)
-// 2. replaces the SWwing window with the back button and the webcam feed
-// 3. keeps grabbing frames from the webcam (like a webcam feed would)
-// 4. it tries to decode a qr code from each and every single frame
-// take a look 
+//this screen swaps in the webcam view and keeps scanning until it finds a valid qr code
 
 public class QrScanner {
     public static void startScanning() {
@@ -33,12 +26,12 @@ public class QrScanner {
         return;
     }
 
-    // webcam
+    //the webcam panel gives us the live feed right away
     WebcamPanel webPanel = new WebcamPanel(webcam);
     webPanel.setFPSDisplayed(true);
     webPanel.setMirrored(true);
 
-    // header with the logo
+    //this header keeps the scanner in the same family as the other pages
     JPanel headerPanel = new JPanel(null);
     headerPanel.setBackground(Color.BLACK);
     headerPanel.setPreferredSize(new Dimension(Main.window.getWidth(), 80));
@@ -48,16 +41,14 @@ public class QrScanner {
     logo.setOnClick(() -> HomePage.show());
     headerPanel.add(logo);
 
-    // main container
+    //borderlayout makes this screen easy to split into header, feed, and back button
     JPanel mainContainer = new JPanel(new BorderLayout());
     
-    // top header
     mainContainer.add(headerPanel, BorderLayout.NORTH);
 
-    // webcam
     mainContainer.add(webPanel, BorderLayout.CENTER);
 
-    // back
+    //back closes the webcam before we leave the page
     JButton backBtn = new JButton("Back");
     backBtn.setFont(new Font("Arial", Font.BOLD, 14));
     backBtn.addActionListener(e -> {
@@ -67,7 +58,7 @@ public class QrScanner {
     mainContainer.add(backBtn, BorderLayout.SOUTH);
     Main.setPage(mainContainer);
 
-    // scan
+    //this worker loop keeps checking frames until a matching account is found
     new Thread(() -> {
         while (true) {
             if (!webcam.isOpen()) continue;

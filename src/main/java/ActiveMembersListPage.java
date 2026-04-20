@@ -23,7 +23,7 @@ public class ActiveMembersListPage {
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
-        // --- Table Setup ---
+        //this table does most of the work on the page, so it gets built early
         String[] columns = {
             "Name", "Mobile No.", "Email Address",
             "Type of Membership", "W/Trainer",
@@ -46,7 +46,7 @@ public class ActiveMembersListPage {
         table.setShowGrid(true);
         table.setIntercellSpacing(new Dimension(1, 1));
 
-        // Header styling
+        //we keep the header readable since this list gets wide fast
         JTableHeader header = table.getTableHeader();
         header.setBackground(new Color(100, 100, 100));
         header.setForeground(Color.WHITE);
@@ -55,7 +55,7 @@ public class ActiveMembersListPage {
         ((DefaultTableCellRenderer) header.getDefaultRenderer())
             .setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Alternating row colors + center align
+        //the renderer handles striping and keeps everything centered
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
@@ -78,14 +78,14 @@ public class ActiveMembersListPage {
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         panel.add(scrollPane);
 
-        // --- Total Profit ---
+        //this gives a quick summary of the active memberships
         JLabel totalProfitLabel = new JLabel("Total Profit: ₱" + totalProfit[0]);
         totalProfitLabel.setFont(new Font("Arial", Font.BOLD, 13));
         totalProfitLabel.setForeground(Color.WHITE);
         totalProfitLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(totalProfitLabel);
 
-        // --- Back Button ---
+        //back takes us to the admin menu
         JButton backBtn = new JButton("Back");
         backBtn.setFont(new Font("Arial", Font.BOLD, 28));
         backBtn.setForeground(Color.WHITE);
@@ -96,7 +96,7 @@ public class ActiveMembersListPage {
         backBtn.addActionListener(e -> AdminMenuPage.show());
         panel.add(backBtn);
 
-        // --- Responsive Layout ---
+        //resizing here is mostly about giving the table as much room as possible
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {

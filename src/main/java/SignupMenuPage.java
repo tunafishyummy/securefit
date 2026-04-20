@@ -145,7 +145,7 @@ public class SignupMenuPage {
             password = new String(passwordField.getPassword()).trim();
             phoneNumber = phoneField.getText().trim();
             
-            // Exception Handling
+            //this page bails out early on the common form mistakes before touching the database
             if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || 
                 password.isEmpty() || phoneNumber.isEmpty()) {
                 JOptionPane.showMessageDialog(Main.window, "Please fill in all fields.", "Incomplete Form", JOptionPane.WARNING_MESSAGE);

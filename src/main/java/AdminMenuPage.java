@@ -12,17 +12,17 @@ public class AdminMenuPage {
         JPanel panel = new JPanel(null);
         panel.setBackground(new Color(30, 30, 30));
 
-        //black top bar
+        //same shared header as the other pages
         JPanel topBar = new JPanel(null);
         topBar.setBackground(Color.BLACK);
         panel.add(topBar);
 
-        //small logo guy
+        //small logo stays as the home shortcut
         ImagePanel image1 = new ImagePanel("images/SmallLogo.png");
         image1.setOnClick(() -> HomePage.show());
         topBar.add(image1);
 
-        //logout
+        //admin logout stays in the header instead of the grid
         JButton logoutBtn = new JButton("Log out");
         logoutBtn.setForeground(Color.WHITE);
         logoutBtn.setContentAreaFilled(false);
@@ -63,7 +63,7 @@ public class AdminMenuPage {
                 int halfWidth = w / 2;
                 int halfHeight = contentHeight / 2;
 
-                //top bar
+                //the header keeps its fixed height while the menu grid takes the rest
                 topBar.setBounds(0, 0, w, 80);
                 image1.setBounds(10, 0, 200, 79);
                 menuLabel.setBounds(0, 16, w, 40);
