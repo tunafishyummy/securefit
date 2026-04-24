@@ -115,7 +115,7 @@ public class SignupMenuPage {
         panel.add(trainerCheckBox);
 
         JLabel priceLabel = new JLabel("\u20B1" + getPrice(membershipType, withTrainer));
-        priceLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 28));
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 28));
         priceLabel.setForeground(new Color(0x228B22));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(priceLabel);

@@ -58,7 +58,7 @@ public class UpgradeMembershipPage {
         panel.add(trainerCheck);
 
         JLabel priceLabel = new JLabel("\u20B1" + MemberDB.calculateCost(selectedType, selectedTrainer));
-        priceLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 28));
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 28));
         priceLabel.setForeground(new Color(34, 139, 34));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(priceLabel);
