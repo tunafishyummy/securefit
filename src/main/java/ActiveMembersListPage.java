@@ -19,7 +19,7 @@ public class ActiveMembersListPage {
         topBar.add(logo);
 
         JLabel title = new JLabel("Active Members List", SwingConstants.CENTER);
-        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
@@ -145,3 +145,4 @@ public class ActiveMembersListPage {
     }
 }
 }
+

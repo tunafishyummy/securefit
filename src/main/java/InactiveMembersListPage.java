@@ -20,7 +20,7 @@ public class InactiveMembersListPage {
         topBar.add(logo);
 
         JLabel title = new JLabel("Inactive Members List", SwingConstants.CENTER);
-        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
@@ -128,3 +128,4 @@ public class InactiveMembersListPage {
         Main.setPage(panel);
     }
 }
+

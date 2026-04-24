@@ -29,7 +29,7 @@ public class QrImage {
         topBar.add(logo);
 
         JLabel title = new JLabel("My QR Code", SwingConstants.CENTER);
-        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         title.setForeground(Color.WHITE);
         panel.add(title);
 
@@ -62,7 +62,7 @@ public class QrImage {
         }
 
         JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        backBtn.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         backBtn.setForeground(Color.WHITE);
         backBtn.setContentAreaFilled(false);
         backBtn.setBorderPainted(false);
@@ -90,3 +90,4 @@ public class QrImage {
         Main.setPage(panel);
     }
 }
+

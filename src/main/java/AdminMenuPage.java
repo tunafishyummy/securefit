@@ -28,12 +28,12 @@ public class AdminMenuPage {
         logoutBtn.setContentAreaFilled(false);
         logoutBtn.setBorderPainted(false);
         logoutBtn.setFocusPainted(false);
-        logoutBtn.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        logoutBtn.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         logoutBtn.addActionListener(e -> HomePage.show());
         topBar.add(logoutBtn);
 
         JLabel menuLabel = new JLabel("Admin Menu", JLabel.CENTER);
-        menuLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        menuLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         menuLabel.setForeground(Color.WHITE);
         topBar.add(menuLabel);
 
@@ -79,3 +79,4 @@ public class AdminMenuPage {
         Main.setPage(panel);
     }
 }
+

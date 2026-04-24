@@ -26,7 +26,7 @@ public class LoggedInMainMenuPage {
         });
 
         JLabel menuLabel = new JLabel("Main Menu", JLabel.CENTER);
-        menuLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        menuLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         menuLabel.setForeground(Color.WHITE);
         topBar.add(menuLabel);
 
@@ -73,3 +73,4 @@ public class LoggedInMainMenuPage {
         Main.setPage(panel);
     }
 }
+

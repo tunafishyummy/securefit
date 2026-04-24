@@ -31,47 +31,47 @@ public class PersonalInfoPage {
         topBar.add(logo);
 
         JLabel title = new JLabel("Personal Info", SwingConstants.CENTER);
-        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         title.setForeground(Color.WHITE);
         panel.add(title);
 
         JLabel firstLabel = new JLabel("FIRST NAME");
-        firstLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        firstLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         firstLabel.setForeground(Color.WHITE);
         firstLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField firstField = new JTextField(data[0]);
         firstField.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JLabel lastLabel = new JLabel("LAST NAME");
-        lastLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        lastLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         lastLabel.setForeground(Color.WHITE);
         lastLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField lastField = new JTextField(data[1]);
         lastField.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
-        emailLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        emailLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         emailLabel.setForeground(Color.WHITE);
         emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField emailField = new JTextField(data[2]);
         emailField.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JLabel phoneLabel = new JLabel("PHONE NUMBER");
-        phoneLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        phoneLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         phoneLabel.setForeground(Color.WHITE);
         phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JTextField phoneField = new JTextField(data[3]);
         phoneField.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JLabel passLabel = new JLabel("NEW PASSWORD (LEAVE BLANK TO KEEP)");
-        passLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        passLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         passLabel.setForeground(Color.WHITE);
         passLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         JPasswordField passField = new JPasswordField();
         passField.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JLabel expireLabel = new JLabel("MEMBERSHIP EXPIRY DATE");
-        expireLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        expireLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         expireLabel.setForeground(Color.WHITE);
         expireLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         String expiry = MemberDB.getExpiry(Auth.getCurrentUser());
@@ -95,13 +95,13 @@ public class PersonalInfoPage {
         JButton saveButton = new JButton("SAVE CHANGES");
         saveButton.setBackground(Color.BLACK);
         saveButton.setForeground(Color.WHITE);
-        saveButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        saveButton.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         saveButton.setFocusPainted(false);
         saveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel.add(saveButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        backButton.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         backButton.setForeground(Color.WHITE);
         backButton.setContentAreaFilled(false);
         backButton.setBorderPainted(false);
@@ -189,3 +189,4 @@ public class PersonalInfoPage {
         Main.setPage(panel);
     }
 }
+

@@ -23,7 +23,7 @@ public class LoginPage {
         topBar.add(logo);
 
         JLabel titleLabel = new JLabel("Member Login", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        titleLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         titleLabel.setForeground(Color.WHITE);
         panel.add(titleLabel);
 
@@ -37,7 +37,7 @@ public class LoginPage {
         panel.add(image2);
 
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
-        emailLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        emailLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         emailLabel.setForeground(Color.WHITE);
         emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(emailLabel);
@@ -47,7 +47,7 @@ public class LoginPage {
         panel.add(emailField);
 
         JLabel passwordLabel = new JLabel("PASSWORD");
-        passwordLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        passwordLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         passwordLabel.setForeground(Color.WHITE);
         passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(passwordLabel);
@@ -59,7 +59,7 @@ public class LoginPage {
         JButton signInButton = new JButton("SIGN IN");
         signInButton.setBackground(Color.BLACK);
         signInButton.setForeground(Color.WHITE);
-        signInButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        signInButton.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         signInButton.setFocusPainted(false);
         signInButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel.add(signInButton);
@@ -111,3 +111,4 @@ public class LoginPage {
         Main.setPage(panel);
     }
 }
+

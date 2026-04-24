@@ -58,7 +58,7 @@ public class RevokedMembershipPage {
         panel.add(revokeBtn);
 
         JButton backBtn = new JButton("Back");
-        backBtn.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        backBtn.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         backBtn.setForeground(Color.WHITE);
         backBtn.setContentAreaFilled(false);
         backBtn.setBorderPainted(false);
@@ -126,3 +126,4 @@ public class RevokedMembershipPage {
         Main.setPage(panel);
     }
 }
+

@@ -48,12 +48,12 @@ public class SignupMenuPage {
         topBar.add(logo);
 
         JLabel title1 = new JLabel("Gym Registration", SwingConstants.CENTER);
-        title1.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title1.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         title1.setForeground(Color.WHITE);
         panel.add(title1);
 
         JLabel firstNameLabel = new JLabel("FIRST NAME");
-        firstNameLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        firstNameLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         firstNameLabel.setForeground(Color.WHITE);
         firstNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(firstNameLabel);
@@ -62,7 +62,7 @@ public class SignupMenuPage {
         panel.add(firstNameField);
 
         JLabel lastNameLabel = new JLabel("LAST NAME");
-        lastNameLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        lastNameLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         lastNameLabel.setForeground(Color.WHITE);
         lastNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(lastNameLabel);
@@ -71,7 +71,7 @@ public class SignupMenuPage {
         panel.add(lastNameField);
 
         JLabel emailLabel = new JLabel("EMAIL ADDRESS");
-        emailLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        emailLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         emailLabel.setForeground(Color.WHITE);
         emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(emailLabel);
@@ -80,7 +80,7 @@ public class SignupMenuPage {
         panel.add(emailField);
 
         JLabel passwordLabel = new JLabel("PASSWORD");
-        passwordLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        passwordLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         passwordLabel.setForeground(Color.WHITE);
         passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(passwordLabel);
@@ -89,7 +89,7 @@ public class SignupMenuPage {
         panel.add(passwordField);
 
         JLabel phoneLabel = new JLabel("PHONE NUMBER");
-        phoneLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        phoneLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         phoneLabel.setForeground(Color.WHITE);
         phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(phoneLabel);
@@ -98,24 +98,24 @@ public class SignupMenuPage {
         panel.add(phoneField);
 
         JLabel membershipLabel = new JLabel("TYPE OF MEMBERSHIP");
-        membershipLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        membershipLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         membershipLabel.setForeground(Color.WHITE);
         membershipLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(membershipLabel);
         JComboBox<String> membershipBox = new JComboBox<>(new String[]{"MONTHLY", "YEARLY", "WEEKLY", "ONE TIME SESSION"});
         membershipBox.setSelectedItem(membershipType);
-        membershipBox.setFont(new Font("Bebas Neue", Font.PLAIN, 18));
+        membershipBox.setFont(FontLoader.bebasNeue(Font.PLAIN, 18));
         panel.add(membershipBox);
 
         JCheckBox trainerCheckBox = new JCheckBox("WITH TRAINER");
         trainerCheckBox.setSelected(withTrainer);
         trainerCheckBox.setBackground(Color.BLACK);
         trainerCheckBox.setForeground(Color.WHITE);
-        trainerCheckBox.setFont(new Font("Bebas Neue", Font.PLAIN, 20));
+        trainerCheckBox.setFont(FontLoader.bebasNeue(Font.PLAIN, 20));
         panel.add(trainerCheckBox);
 
         JLabel priceLabel = new JLabel("\u20B1" + getPrice(membershipType, withTrainer));
-        priceLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 28));
+        priceLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 28));
         priceLabel.setForeground(new Color(0x228B22));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(priceLabel);
@@ -123,7 +123,7 @@ public class SignupMenuPage {
         JButton registerButton = new JButton("REGISTER");
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(Color.WHITE);
-        registerButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        registerButton.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         registerButton.setFocusPainted(false);
         registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel.add(registerButton);
@@ -227,3 +227,4 @@ public class SignupMenuPage {
         Main.setPage(panel);
     }
 }
+

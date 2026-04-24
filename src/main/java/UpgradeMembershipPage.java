@@ -34,12 +34,12 @@ public class UpgradeMembershipPage {
         topBar.add(logo);
 
         JLabel titleLabel = new JLabel("Upgrade Membership", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        titleLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         titleLabel.setForeground(Color.WHITE);
         panel.add(titleLabel);
 
         JLabel typeLabel = new JLabel("TYPE OF MEMBERSHIP");
-        typeLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        typeLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         typeLabel.setForeground(Color.WHITE);
         typeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(typeLabel);
@@ -47,18 +47,18 @@ public class UpgradeMembershipPage {
         String[] types = {"ONE TIME SESSION", "WEEKLY", "MONTHLY", "YEARLY"};
         JComboBox<String> typeBox = new JComboBox<>(types);
         typeBox.setSelectedItem(selectedType);
-        typeBox.setFont(new Font("Bebas Neue", Font.PLAIN, 18));
+        typeBox.setFont(FontLoader.bebasNeue(Font.PLAIN, 18));
         panel.add(typeBox);
 
         JCheckBox trainerCheck = new JCheckBox("WITH TRAINER");
         trainerCheck.setSelected(selectedTrainer);
         trainerCheck.setBackground(Color.BLACK);
         trainerCheck.setForeground(Color.WHITE);
-        trainerCheck.setFont(new Font("Bebas Neue", Font.PLAIN, 20));
+        trainerCheck.setFont(FontLoader.bebasNeue(Font.PLAIN, 20));
         panel.add(trainerCheck);
 
         JLabel priceLabel = new JLabel("\u20B1" + MemberDB.calculateCost(selectedType, selectedTrainer));
-        priceLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 28));
+        priceLabel.setFont(FontLoader.bebasNeue(Font.PLAIN, 28));
         priceLabel.setForeground(new Color(34, 139, 34));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(priceLabel);
@@ -66,13 +66,13 @@ public class UpgradeMembershipPage {
         JButton upgradeBtn = new JButton("UPGRADE");
         upgradeBtn.setBackground(Color.BLACK);
         upgradeBtn.setForeground(Color.WHITE);
-        upgradeBtn.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        upgradeBtn.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         upgradeBtn.setFocusPainted(false);
         upgradeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel.add(upgradeBtn);
 
         JButton backButton = new JButton("Back");
-        backButton.setFont(new Font("Bebas Neue", Font.PLAIN, 24));
+        backButton.setFont(FontLoader.bebasNeue(Font.PLAIN, 24));
         backButton.setForeground(Color.WHITE);
         backButton.setContentAreaFilled(false);
         backButton.setBorderPainted(false);
@@ -131,3 +131,4 @@ public class UpgradeMembershipPage {
         Main.setPage(panel);
     }
 }
+

@@ -21,7 +21,7 @@ public class RevokedMembershipListPage {
         topBar.add(logo);
 
         JLabel title = new JLabel("Revoked Members", SwingConstants.CENTER);
-        title.setFont(new Font("Bebas Neue", Font.PLAIN, 34));
+        title.setFont(FontLoader.bebasNeue(Font.PLAIN, 34));
         title.setForeground(Color.WHITE);
         topBar.add(title);
 
@@ -135,3 +135,4 @@ public class RevokedMembershipListPage {
         }
     }
 }
+
